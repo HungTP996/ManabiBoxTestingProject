@@ -1,0 +1,9 @@
+
+Login successful and main menu is ready.
+テスト開始: カタカナページの遷移とホームアイコンのテスト
+>>> 遷移先のページを正しく表示しました。
+>>> alt='icon home' のアイコンをクリックして戻ります。
+>>> メインメニューに正しく戻りました。
+
+
+Test function finished.
