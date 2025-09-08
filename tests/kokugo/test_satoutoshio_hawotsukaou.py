@@ -2,16 +2,17 @@
 
 import pytest
 from playwright.sync_api import Page, expect
-from .kokugo_test_data import QUESTIONS_DATA_HA_WO_TSUKAOU
+from .kokugo_data import QUESTIONS_DATA_HA_WO_TSUKAOU
 
 
 @pytest.fixture(scope="class")
 def kokugo_main_page(logged_in_page: Page):
     """
-    Fixture này chạy 1 lần duy nhất: Đăng nhập và vào trang môn học Kokugo.
+    このFixtureは一度だけ実行されます：ログインして国語の教科ページに移動します。
+    (Fixture này chạy 1 lần duy nhất: Đăng nhập và vào trang môn học Kokugo.)
     """
     page = logged_in_page
-    print("\n--- [CLASS SETUP] Đăng nhập và vào trang Kokugo ---")
+    print("\n--- [CLASS SETUP] ログインし、国語ページへ遷移します ---")
     page.get_by_alt_text("国語").click()
     expect(page.get_by_text("あめですよ").first).to_be_visible()
     yield page
@@ -20,47 +21,48 @@ def kokugo_main_page(logged_in_page: Page):
 @pytest.fixture(scope="function")
 def quiz_session(kokugo_main_page: Page):
     """
-    Fixture này chạy TRƯỚC và SAU mỗi hàm test.
-    Setup: Từ trang Kokugo, click vào chủ đề để vào màn hình làm bài.
-    Teardown (Tùy chọn): Có thể thêm các bước dọn dẹp ở đây.
+    このFixtureは各テストケースの前に実行されます。
+    セットアップ：国語ページからトピックをクリックし、問題画面に移動します。
+    (Fixture này chạy TRƯỚC mỗi hàm test.
+    Setup: Từ trang Kokugo, click vào chủ đề để vào màn hình làm bài.)
     """
     page = kokugo_main_page
-    # --- PHẦN SETUP (Chạy trước mỗi test) ---
-    print(f"\n--- [FUNCTION SETUP] Vào màn hình làm bài của chủ đề 'はを つかおう' ---")
+    # --- セットアップ処理（各テストの前に実行） ---
+    print(f"\n--- [FUNCTION SETUP] 「はを つかおう」テーマの問題画面へ遷移します ---")
     topic_container = page.locator("p:has-text('はを　つかおう')").locator("..")
     topic_container.get_by_alt_text("basic").click()
 
-    yield page  # Giao quyền cho hàm test
+    yield page  # テスト関数に制御を渡します (Giao quyền cho hàm test)
 
-    # --- PHẦN TEARDOWN (Chạy sau mỗi test) ---
-    # Sau khi mỗi kịch bản (đúng/sai) kết thúc, nó sẽ tự động ở trang Kokugo.
-    # Không cần thêm teardown ở đây vì luồng test đã xử lý việc thoát ra.
-    print(f"--- [FUNCTION TEARDOWN] Kết thúc một kịch bản ---")
+    # --- ティアダウン処理（各テストの後に実行） ---
+    print(f"--- [FUNCTION TEARDOWN] シナリオを終了します ---")
 
 
 # ===================================================================
-# == LỚP TEST: Chứa các kịch bản test ==
+# == テストクラス：テストシナリオを格納 ==
+# (LỚP TEST: Chứa các kịch bản test)
 # ===================================================================
 
 class TestTopicHaWoTsukaou:
 
     def test_full_quiz_happy_path(self, quiz_session: Page):
         """
-        Kịch bản 1: Trả lời đúng tuần tự từ câu 1 đến câu 5.
+        シナリオ1：問1から問5まで順番に正解します。
+        (Kịch bản 1: Trả lời đúng tuần tự từ câu 1 đến câu 5.)
         """
         page = quiz_session
-        print("\n--- Bắt đầu kịch bản trả lời đúng từ câu 1 đến 5 ---")
+        print("\n--- 問1から問5まで正解するシナリオを開始 ---")
 
         for index, question in enumerate(QUESTIONS_DATA_HA_WO_TSUKAOU):
             question_type = question.get("type", "text")
-            print(f"--> Đang thực hiện câu hỏi {question['id']} (Loại: {question_type})")
+            print(f"--> 質問 {question['id']} を実行中（タイプ：{question_type}）")
 
-            # --- Xử lý câu hỏi chọn đáp án ---
+            # --- 回答選択問題を処理 ---
             if question_type == "text":
                 for answer in question["correct_answers"]:
                     page.get_by_text(answer, exact=True).click()
 
-            # --- Xử lý câu hỏi điền vào chỗ trống ---
+            # --- 穴埋め問題を処理 ---
             elif question_type == "fill_blank":
                 for action in question["correct_answers"]:
                     blank_box = page.locator(action["blank_locator"])
@@ -68,7 +70,7 @@ class TestTopicHaWoTsukaou:
                     blank_box.click()
                     choice.click()
 
-            # --- Xử lý câu hỏi kéo thả ---
+            # --- ドラッグ＆ドロップ問題を処理 ---
             elif question_type == "drag_drop":
                 for drag_action in question["correct_drag_mapping"]:
                     item_text = question["items_to_drag"][drag_action["item"]]
@@ -76,15 +78,13 @@ class TestTopicHaWoTsukaou:
                     drop_zone = page.locator(zone_selector).nth(0 if drag_action["zone"] == "zone1" else 1)
                     page.get_by_text(item_text).drag_to(drop_zone)
 
-            # --- Các bước kiểm tra và chuyển tiếp ---
+            # --- 確認と次のステップへ ---
             page.get_by_role("button", name="こたえあわせ").click()
-            # Thêm bước click vào overlay kết quả để đóng nó nếu cần
-            # page.locator(".result-overlay").click()
 
             if index < len(QUESTIONS_DATA_HA_WO_TSUKAOU) - 1:
                 page.get_by_role("button", name="つぎへ").click()
             else:
-                # Luồng kết thúc bài làm
+                # 回答終了フロー
                 review_button = page.get_by_role("button", name="ふりかえり")
                 expect(review_button).to_be_visible()
                 review_button.click()
@@ -96,54 +96,53 @@ class TestTopicHaWoTsukaou:
                 expect(finish_button).to_be_visible()
                 finish_button.click()
 
-        print("--- Kịch bản ĐÚNG hoàn tất ---")
+        print("--- 正解シナリオを完了しました ---")
         expect(page.get_by_text("あめですよ").first).to_be_visible()
 
     def test_full_quiz_all_incorrect(self, quiz_session: Page):
         """
-        Kịch bản 2: Trả lời sai tất cả các câu hỏi.
+        シナリオ2：すべての質問に不正解します。
+        (Kịch bản 2: Trả lời sai tất cả các câu hỏi.)
         """
         page = quiz_session
-        print("\n--- Bắt đầu kịch bản trả lời sai ---")
+        print("\n--- 不正解シナリオを開始 ---")
 
         for index, question in enumerate(QUESTIONS_DATA_HA_WO_TSUKAOU):
             question_type = question.get("type", "text")
-            print(f"--> Đang thực hiện câu hỏi {question['id']} (Trả lời SAI)")
+            print(f"--> 質問 {question['id']} を実行中（不正解を選択）")
 
-            # --- Xử lý câu 1, 2, 3 (chọn đáp án SAI) ---
+            # --- 不正解シナリオ「incorrect_answers」から読み込み ---
             if question_type == "text":
                 incorrect_answer = question["incorrect_answers"][0]
                 page.get_by_text(incorrect_answer, exact=True).click()
 
-            # --- Xử lý câu 4 (điền vào chỗ trống SAI) ---
+            # --- 不正解シナリオ「incorrect_answers」から読み込み ---
             elif question_type == "fill_blank":
-                # Đọc từ kịch bản sai "incorrect_answers"
                 for action in question["incorrect_answers"]:
                     blank_box = page.locator(action["blank_locator"])
                     choice = page.get_by_text(action["choice_text"], exact=True)
                     blank_box.click()
                     choice.click()
 
-            # --- Xử lý câu 5 (kéo thả SAI) ---
+            # --- 不正解シナリオ「incorrect_drag_mapping」から読み込み ---
             elif question_type == "drag_drop":
-                # Đọc từ kịch bản sai "incorrect_drag_mapping"
                 for drag_action in question["incorrect_drag_mapping"]:
                     item_text = question["items_to_drag"][drag_action["item"]]
                     zone_selector = question["drop_zones"][drag_action["zone"]]
                     drop_zone = page.locator(zone_selector).nth(0 if drag_action["zone"] == "zone1" else 1)
                     page.get_by_text(item_text).drag_to(drop_zone)
 
-            # --- Các bước kiểm tra và chuyển tiếp ---
+            # --- 確認と次のステップへ ---
             page.get_by_role("button", name="こたえあわせ").click()
 
-            # Kiểm tra kết quả là SAI
+            # 結果が不正解であることを確認
             expect(page.locator(".icon__answer--wrong")).to_be_visible()
 
-            # Chuyển tiếp sau khi trả lời
+            # 回答後に次のステップへ
             if index < len(QUESTIONS_DATA_HA_WO_TSUKAOU) - 1:
                 page.get_by_role("button", name="つぎへ").click()
             else:
-                # Luồng kết thúc (giống như trên)
+                # 終了フロー（上記と同じ）
                 review_button = page.get_by_role("button", name="ふりかえり")
                 expect(review_button).to_be_visible()
                 review_button.click()
@@ -153,5 +152,5 @@ class TestTopicHaWoTsukaou:
                 expect(finish_button).to_be_visible()
                 finish_button.click()
 
-        print("--- Kịch bản SAI hoàn tất ---")
+        print("--- 不正解シナリオを完了しました ---")
         expect(page.get_by_text("あめですよ").first).to_be_visible()

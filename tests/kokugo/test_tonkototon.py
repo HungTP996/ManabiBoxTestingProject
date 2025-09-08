@@ -1,81 +1,62 @@
+# tests/kokugo/test_tonkototon.py
+
 import pytest
 import random
 from playwright.sync_api import Page, expect
+from .kokugo_data import QUESTIONS_DATA_TONKOTOTON
+
 
 @pytest.fixture(scope="class")
 def kokugo_main_page(logged_in_page: Page):
     """
-    Fixture này chạy 1 lần duy nhất cho cả lớp test:
-    Đăng nhập -> Vào trang chủ đề Kokugo.
+    このFixtureはクラスごとに一度だけ実行されます：ログインして国語の教科ページに移動します。
+    (Fixture này chạy 1 lần duy nhất: Đăng nhập và vào trang môn học Kokugo.)
     """
     page = logged_in_page
-    print("\n--- [CLASS SETUP] Đăng nhập và vào trang Kokugo ---")
+    print("\n--- [CLASS SETUP] ログインし、国語ページへ遷移します ---")
     page.get_by_alt_text("国語").click()
     expect(page.get_by_text("とん　こと　とん")).to_be_visible()
     yield page
 
+
 @pytest.fixture(scope="function")
 def quiz_session(kokugo_main_page: Page):
     """
-    Fixture này chạy TRƯỚC MỖI HÀM TEST.
-    Nhiệm vụ: Từ trang Kokugo, click vào title để vào màn hình câu hỏi.
+    このFixtureは各テストケースの前に実行されます。
+    セットアップ：国語ページからトピックをクリックし、問題画面に移動します。
+    (Fixture này chạy TRƯỚC mỗi hàm test.
+    Setup: Từ trang Kokugo, click vào chủ đề để vào màn hình làm bài.)
     """
     page = kokugo_main_page
-    print("\n--- [METHOD SETUP] Vào màn hình làm bài ---")
+    # --- セットアップ処理（各テストの前に実行） ---
+    print(f"\n--- [FUNCTION SETUP] 問題画面へ遷移します ---")
     topic_title = page.locator("p:has-text('ぶんを　つくろう')")
     topic_container = topic_title.locator("..")
     topic_container.get_by_alt_text("basic").click()
-    yield page
+
+    yield page  # テスト関数に制御を渡します (Giao quyền cho hàm test)
+
+
 class TestTonkototon_Scenarios:
-
-    QUESTIONS_DATA = [
-        # --- Câu hỏi 1:
-        {
-            "id": 1, "type": "text",
-            "correct_answers": ["およぐ"],
-            "incorrect_answers": ["はねる", "たべる"]
-        },
-        # --- Câu hỏi 2:
-        {
-            "id": 2, "type": "text",
-            "correct_answers": ["ねる"],
-            "incorrect_answers": ["はしる", "たべる"]
-        },
-        # --- Câu hỏi 3:
-        {
-            "id": 3, "type": "text",
-            "correct_answers": ["わらう"],
-            "incorrect_answers": ["おこる", "あるく"]
-        },
-        # --- Câu hỏi 4 ---
-        {
-            "id": 4, "type": "text",
-            "correct_answers": ["あめが　ふる。", "あじさいが　さく。"],
-            "incorrect_answers": ["かさが　こわれる。", "かえるが　ねる。"]
-        },
-        # --- Câu hỏi 5 ---
-        {
-            "id": 5, "type": "text",
-            "correct_answers": ["とりが　おどろく。", "とりが　わらう。"],
-            "incorrect_answers": ["とりが　たべる。", "とりが　およぐ。"]
-        },
-    ]
-
+    QUESTIONS_DATA = QUESTIONS_DATA_TONKOTOTON
     def test_scenario_all_correct(self, quiz_session: Page):
-        """Kịch bản 1: Chọn TẤT CẢ các đáp án đúng cho mỗi câu hỏi."""
+        """
+        シナリオ1：すべての質問に正解します。
+        (Kịch bản 1: Chọn TẤT CẢ các đáp án đúng cho mỗi câu hỏi.)
+        """
         page = quiz_session
-        print("\n--- Bắt đầu kịch bản: Tất cả đều đúng ---")
+        print("\n--- 正解シナリオを開始 ---")
 
         total_questions = len(self.QUESTIONS_DATA)
         for index, question in enumerate(self.QUESTIONS_DATA):
-            print(f"--> Câu hỏi {question['id']}: Chọn các đáp án ĐÚNG")
+            print(f"--> 質問 {question['id']} を実行中（正解を選択）")
 
-            # Vòng lặp để click vào TẤT CẢ các đáp án đúng
+            # すべての正解をクリックするためのループ
             for answer in question["correct_answers"]:
-                # Logic mới: Kiểm tra loại locator và dùng đúng phương thức
+                # 新しいロジック：ロケーターのタイプを確認し、適切なメソッドを使用
                 if question["type"] == "text":
                     page.get_by_text(answer, exact=True).click()
-                else:  # "css" hoặc "xpath"
+                else:  # "css" または "xpath"
                     page.locator(answer).click()
 
             page.get_by_role("button", name="こたえあわせ").click()
@@ -84,37 +65,41 @@ class TestTonkototon_Scenarios:
             if index < total_questions - 1:
                 page.get_by_role("button", name="つぎへ").click()
             else:
-                print("--> Hoàn thành câu cuối, bắt đầu luồng kết thúc...")
+                print("--> 最後の質問を完了し、終了フローを開始します...")
                 review_button = page.locator("button:has-text('ふりかえり')")
                 review_button.wait_for(state="visible", timeout=10000)
-                print("-> Nút 'ふりかえり' đã xuất hiện.")
+                print("-> 「ふりかえり」ボタンが表示されました。")
                 review_button.click()
-                print("-> Đã click 'ふりかえり'")
+                print("-> 「ふりかえり」ボタンをクリックしました。")
                 review_title = page.locator("p:has-text('ふりかえり')")
                 expect(review_title).to_be_visible()
-                print("-> Đã vào trang Review")
+                print("-> 確認ページに移動しました。")
                 finish_button = page.get_by_text("おわる", exact=True)
                 expect(finish_button).to_be_visible()
                 finish_button.click()
-                print("-> Đã click 'おわる'")
+                print("-> 「おわる」ボタンをクリックしました。")
 
+        print("--- 正解シナリオを完了しました ---")
         expect(page.get_by_text("とん　こと　とん")).to_be_visible()
 
     def test_scenario_all_incorrect(self, quiz_session: Page):
-        """Kịch bản 2: Chọn MỘT đáp án sai cho mỗi câu hỏi."""
+        """
+        シナリオ2：各質問に対して不正解を1つ選択します。
+        (Kịch bản 2: Chọn MỘT đáp án sai cho mỗi câu hỏi.)
+        """
         page = quiz_session
-        print("\n--- Bắt đầu kịch bản: Tất cả đều sai ---")
+        print("\n--- 不正解シナリオを開始 ---")
 
+        random.seed(15)
         total_questions = len(self.QUESTIONS_DATA)
         for index, question in enumerate(self.QUESTIONS_DATA):
-            print(f"--> Câu hỏi {question['id']}: Chọn một đáp án SAI")
-            random.seed(15)
-            # Chỉ cần click vào đáp án sai ĐẦU TIÊN trong danh sách
-            first_incorrect_answer = question["incorrect_answers"][0]
-            # Logic mới: Kiểm tra loại locator và dùng đúng phương thức
+            print(f"--> 質問 {question['id']} を実行中（不正解を選択）")
+
+            # リストの最初の不正解をクリックするだけ
+            first_incorrect_answer = random.choice(question["incorrect_answers"])
             if question["type"] == "text":
                 page.get_by_text(first_incorrect_answer, exact=True).click()
-            else:  # "css" hoặc "xpath"
+            else:
                 page.locator(first_incorrect_answer).click()
 
             page.get_by_role("button", name="こたえあわせ").click()
@@ -123,7 +108,8 @@ class TestTonkototon_Scenarios:
             if index < total_questions - 1:
                 page.get_by_role("button", name="つぎへ").click()
             else:
-                print("--> Hoàn thành câu cuối, bắt đầu luồng kết thúc...")
+                # 終了フロー（上記と同じ）
+                print("--> 最後の質問を完了し、終了フローを開始します...")
                 review_button = page.locator("button:has-text('ふりかえり')")
                 review_button.wait_for(state="visible", timeout=10000)
                 review_button.click()
@@ -133,5 +119,5 @@ class TestTonkototon_Scenarios:
                 expect(finish_button).to_be_visible()
                 finish_button.click()
 
-        print("--- Kịch bản hoàn tất ---")
+        print("--- 不正解シナリオを完了しました ---")
         expect(page.get_by_text("とん　こと　とん")).to_be_visible()

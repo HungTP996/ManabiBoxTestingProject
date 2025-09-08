@@ -78,13 +78,13 @@ NAVIGATION_TEST_CASES = [
 @pytest.mark.parametrize("test_case", NAVIGATION_TEST_CASES)
 def test_main_menu_navigation(logged_in_page: Page, test_case: dict):
     """
-    Mỗi bộ dữ liệu sẽ được chạy như một test case độc lập.
-    Fixture 'logged_in_page' sẽ đảm bảo đăng nhập mới cho mỗi case.
+    各テストデータは独立したテストケースとして実行されます。
+    フィクスチャ「logged_in_page」により、各ケースで新規にログインが行われます。
     """
     page = logged_in_page
     print(f"テスト開始: {test_case['description']}")
 
-    # --- BƯỚC 1: Click vào item trên menu chính ---
+    # --- ステップ1: メインメニューの項目をクリック ---
     if test_case["click_alt"] == "CBT":
         element_to_click = page.locator('img[src*="btn_top_CBT_n"]')
     else:
@@ -93,11 +93,11 @@ def test_main_menu_navigation(logged_in_page: Page, test_case: dict):
     expect(element_to_click).to_be_visible()
     element_to_click.click()
 
-    # --- BƯỚC 2: Kiểm tra đã đến đúng trang đích ---
+    # --- ステップ2: 正しい遷移先ページにいることを確認 ---
     assert_answer(page, test_case["expected_value"])
     print(">>> 遷移先のページを正しく表示しました。")
 
-    # --- BƯỚC 3: Thực hiện hành động quay lại ---
+    # --- ステップ3: 戻る操作を実行 ---
     back_method = test_case["back_method"]
     back_selector = test_case["back_selector"]
 
@@ -115,6 +115,6 @@ def test_main_menu_navigation(logged_in_page: Page, test_case: dict):
         page.go_back()
         print(">>> ブラウザの戻る機能で戻ります。")
 
-    # --- BƯỚC 4: Đảm bảo đã quay lại menu chính thành công ---
+    # --- ステップ4: メインメニューに正しく戻ったことを確認 ---
     expect(page.get_by_alt_text("まなびボックス")).to_be_visible(timeout=10000)
     print(">>> メインメニューに正しく戻りました。\n")
