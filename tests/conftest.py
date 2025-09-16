@@ -1,7 +1,9 @@
 # conftest.py
 import pytest
-from playwright.sync_api import Page, expect, Browser, BrowserContext
 import os
+import google.generativeai as genai
+from playwright.sync_api import Page, expect, Browser, BrowserContext
+from PIL import Image
 from config import settings
 
 # Hook để lấy kết quả test (giữ nguyên)
@@ -66,3 +68,37 @@ def pytest_make_parametrize_id(config, val, argname):
     if argname == "test_case" and isinstance(val, dict):
         return val.get("test_id") or val.get("description")
     return None
+
+
+@pytest.fixture(scope="session")
+def ai_vision_verifier():
+    """
+    Fixture này cung cấp một hàm có khả năng xác minh hình ảnh bằng AI.
+    Nó chỉ thiết lập model một lần duy nhất cho toàn bộ phiên test.
+    """
+    print("\n--- [SESSION SCOPE] Khởi tạo AI Vision Verifier ---")
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        pytest.fail("GEMINI_API_KEY không được tìm thấy. Vui lòng kiểm tra file .env.")
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+
+    # Định nghĩa một hàm nội bộ và trả về nó
+    def _verify(screenshot_path: str, expected_char: str) -> bool:
+        print(f"\n--- Gửi ảnh '{screenshot_path}' cho AI để phân tích... ---")
+        try:
+            image = Image.open(screenshot_path)
+            prompt = f"Is the character in this image the Japanese hiragana for '{expected_char}'? Answer only YES or NO."
+
+            response = model.generate_content([prompt, image])
+            ai_answer = response.text.strip().upper()
+
+            print(f"-> Phản hồi từ AI: '{ai_answer}'")
+            return ai_answer == "YES"
+        except Exception as e:
+            pytest.fail(f"Lỗi khi gọi API của AI: {e}")
+            return False
+
+    # Trả về chính hàm _verify để các bài test có thể gọi nó
+    yield _verify

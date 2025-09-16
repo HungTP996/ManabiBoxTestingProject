@@ -67,4 +67,6 @@ pytest tests/frontend/test_google_page.py -k "test_google_search_page_title"
 
 # để stop môi trường
 deactivate
+
+# --alluredir=./allure-results
 ```
