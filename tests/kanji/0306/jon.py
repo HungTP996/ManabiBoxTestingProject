@@ -1,8 +1,6 @@
 import pytest
 from playwright.sync_api import Page, expect
-import time
 import os
-import re
 
 # ===================================================================
 # == FIXTURE SETUP: Chuẩn bị môi trường cho bài test ==
@@ -10,16 +8,16 @@ import re
 @pytest.fixture(scope="function")
 def kanji_go_quiz_page(logged_in_page: Page):
     """
-    Fixture này thực hiện toàn bộ quá trình để vào bài làm của chữ "五".
+    Fixture này thực hiện toàn bộ quá trình để vào bài làm của chữ "四 ".
     """
     page = logged_in_page
-    print("\n--- [SETUP] Bắt đầu điều hướng đến bài làm chữ '五' ---")
+    print("\n--- [SETUP] Bắt đầu điều hướng đến bài làm chữ '四 ' ---")
     # Bước 1: Click vào môn "漢字"
     page.get_by_alt_text("漢字").click()
-    # Chờ cho trang Kanji tải xong (kiểm tra sự hiện diện của nút "五")
-    go_button_in_list = page.get_by_text("五 ", exact=True)
+    # Chờ cho trang Kanji tải xong (kiểm tra sự hiện diện của nút "四 ")
+    go_button_in_list = page.get_by_text("四  ", exact=True)
     expect(go_button_in_list).to_be_visible(timeout=10000)
-    # Bước 2: Click vào chữ "五" để vào xem chi tiết
+    # Bước 2: Click vào chữ "四 " để vào xem chi tiết
     go_button_in_list.click()
     # Bước 3: Click "つぎにすすむ" để vào màn hình vẽ
     page.get_by_text("つぎにすすむ").click()
@@ -35,7 +33,7 @@ def kanji_go_quiz_page(logged_in_page: Page):
 class TestGo:
 
     # THÊM `ai_vision_verifier` VÀO DANH SÁCH THAM SỐ
-    def test_kanji_go_drawing_and_ai_verification(self, kanji_go_quiz_page: Page, ai_vision_verifier):
+    def test_kanji_jon_drawing_and_ai_verification(self, kanji_go_quiz_page: Page, ai_vision_verifier):
         """
         Test kịch bản: Vẽ chữ "五", sau đó xác minh bằng AI.
         """
@@ -52,42 +50,53 @@ class TestGo:
             canvas_box = drawing_canvas.bounding_box()
             origin_x, origin_y = canvas_box['x'], canvas_box['y']
 
-            # --- Nét ①: Nét ngang trên cùng ---
-            page.mouse.move(origin_x + 102, origin_y + 88)
+            # --- Nét ①: Nét dọc ---
+            page.mouse.move(origin_x + 63, origin_y + 106)
             page.mouse.down()
-            page.mouse.move(origin_x + 170, origin_y + 89)
-            page.mouse.move(origin_x + 223, origin_y + 76)
+            page.mouse.move(origin_x + 73, origin_y + 240)
             page.mouse.up()
-            # --- Nét ②: Nét sổ dọc ---
-            page.mouse.move(origin_x + 163, origin_y + 85)
+            # --- Nét ②: Nét ngang gập ---
+            page.mouse.move(origin_x + 60, origin_y + 110)
             page.mouse.down()
-            page.mouse.move(origin_x + 117, origin_y + 238)
+            page.mouse.move(origin_x + 222, origin_y + 92)
+            page.mouse.move(origin_x + 264, origin_y + 92)
+            # page.mouse.move(origin_x + 265, origin_y + 93)
+            page.mouse.move(origin_x + 264, origin_y + 94)
+            page.mouse.move(origin_x + 264, origin_y + 95)
+            page.mouse.move(origin_x + 250, origin_y + 230)
             page.mouse.up()
-            # --- Nét ③: Nét ngang gập ---
-            page.mouse.move(origin_x + 95, origin_y + 163)
+            # --- Nét ③: nét sổ trái
+            page.mouse.move(origin_x + 135, origin_y + 100)
             page.mouse.down()
-            page.mouse.move(origin_x + 150, origin_y + 150)
-            page.mouse.move(origin_x + 208, origin_y + 152)
-            page.mouse.move(origin_x + 210, origin_y + 155)
-            page.mouse.move(origin_x + 205, origin_y + 155)
-            page.mouse.move(origin_x + 205, origin_y + 235)
+            page.mouse.move(origin_x + 130, origin_y + 125)
+            page.mouse.move(origin_x + 125, origin_y + 150)
+            page.mouse.move(origin_x + 105, origin_y + 185)
+            page.mouse.move(origin_x + 75, origin_y + 200)
             page.mouse.up()
-            # --- Nét ④: Nét ngang dưới cùng (Nét "đóng") ---
-            page.mouse.move(origin_x + 45, origin_y + 245)
+            # --- Nét ④: nét sổ vòng cung sang phải ---
+            page.mouse.move(origin_x + 175, origin_y + 100)
             page.mouse.down()
-            page.mouse.move(origin_x + 280, origin_y + 235)
+            page.mouse.move(origin_x + 175, origin_y + 125)
+            page.mouse.move(origin_x + 185, origin_y + 170)
+            page.mouse.move(origin_x + 195, origin_y + 170)
+            page.mouse.move(origin_x + 255, origin_y + 170)
+            page.mouse.up()
+            # --- Nét ⑤: Nét ngang dưới cùng (Nét "đóng") ---
+            page.mouse.move(origin_x + 74, origin_y + 238)
+            page.mouse.down()
+            page.mouse.move(origin_x + 250, origin_y + 230)
             page.mouse.up()
             print("--- Vẽ xong! ---")
             canvas_to_verify = page.locator("canvas").nth(2)
             folder_name = "ai_screenshots"
             os.makedirs(folder_name, exist_ok=True)
             # Thay đổi tên file cho mỗi lần lặp để không bị ghi đè
-            screenshot_path = os.path.join(folder_name, f"go_drawing_to_verify_{i + 1}.png")
+            screenshot_path = os.path.join(folder_name, f"jon_drawing_to_verify_{i + 1}.png")
             canvas_to_verify.screenshot(path=screenshot_path)
             print(f"-> Đã chụp ảnh bảng vẽ và lưu tại: {screenshot_path}")
 
-            is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="五")
-            assert is_correct, f"AI không nhận diện đúng ký tự '五' ở lần lặp thứ {i + 1}."
+            is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="四")
+            assert is_correct, f"AI không nhận diện đúng ký tự '四' ở lần lặp thứ {i + 1}."
             print("-> AI đã xác nhận hình vẽ chính xác!")
 
             # --- Chuyển tiếp ---

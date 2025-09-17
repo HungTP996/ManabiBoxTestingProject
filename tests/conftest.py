@@ -89,7 +89,7 @@ def ai_vision_verifier():
         print(f"\n--- Gửi ảnh '{screenshot_path}' cho AI để phân tích... ---")
         try:
             image = Image.open(screenshot_path)
-            prompt = f"Is the character in this image the Japanese hiragana for '{expected_char}'? Answer only YES or NO."
+            prompt = f"Is the character in this image the Japanese for '{expected_char}'? Answer only YES or NO."
 
             response = model.generate_content([prompt, image])
             ai_answer = response.text.strip().upper()
