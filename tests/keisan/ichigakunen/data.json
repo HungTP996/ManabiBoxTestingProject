@@ -1,0 +1,87 @@
+[
+    {
+        "id": "kazu_001",
+        "topic": "kazutosuuji",
+        "correct_answers": ["//*[@id='864288']"],
+        "incorrect_answers": ["xpath=//*[@id='864287']","xpath=//*[@id='864289']","xpath=//*[@id='864290']"],
+        "expected_message": "かぞえまちがえないように"
+    },
+    {
+        "id": "kazu_002",
+        "topic": "kazutosuuji",
+        "correct_answers": ["//*[@id='864293']"],
+        "incorrect_answers": ["xpath=//*[@id='864291']","xpath=//*[@id='864292']","xpath=//*[@id='864294']"],
+        "expected_message": "かぞえまちがえないように"
+    },
+    {
+        "id": "kazu_003",
+        "topic": "kazutosuuji",
+        "correct_answers": ["//*[@id='864298']"],
+        "incorrect_answers": ["xpath=//*[@id='864295']","xpath=//*[@id='864296']","xpath=//*[@id='864297']"],
+        "expected_message": "かぞえまちがえないように"
+    },
+    {
+        "id": "kazu_004",
+        "topic": "kazutosuuji",
+        "correct_answers": ["//*[@id='864299']"],
+        "incorrect_answers": ["xpath=//*[@id='864300']"],
+        "expected_message": "(あ)は　8こ、(い)は　7こだね。"
+    },
+      {
+        "id": "kazu_005",
+        "topic": "kazutosuuji",
+        "correct_answers": ["//*[@id='864302']"],
+        "incorrect_answers": ["//*[@id='864301']"],
+        "expected_message": "1から　じゅんに　かぞえよう。あとの　かずの　ほうがおおきいよ。"
+    },
+    {
+        "id": "kazu_006",
+        "topic": "kazutosuuji",
+        "correct_answers": ["//*[@id='864304']"],
+        "incorrect_answers": ["xpath=//*[@id='864303']","xpath=//*[@id='864305']","xpath=//*[@id='864306']"],
+        "expected_message": "3から　じゅんにかぞえよう。"
+    },
+
+      {
+        "id": "nanb_001",
+        "topic": "nanbanme",
+        "correct_answers": ["//*[@id='864307']"],
+        "incorrect_answers": ["xpath=//*[@id='864308']","xpath=//*[@id='864309']","xpath=//*[@id='864310']"],
+        "expected_message": "まえから　じゅんにかぞえよう。"
+    },
+    {
+        "id": "nanb_002",
+        "topic": "nanbanme",
+        "correct_answers": ["//*[@id='864314']"],
+        "incorrect_answers": ["xpath=//*[@id='864311']","xpath=//*[@id='864312']","xpath=//*[@id='864313']"],
+        "expected_message": "まえから　じゅんにかぞえよう。"
+    },
+    {
+        "id": "nanb_003",
+        "topic": "nanbanme",
+        "correct_answers": ["//*[@id='864317']"],
+        "incorrect_answers": ["xpath=//*[@id='864315']","xpath=//*[@id='864316']","xpath=//*[@id='864318']"],
+        "expected_message": "うしろから　じゅんにかぞえよう。"
+    },
+    {
+        "id": "nanb_004",
+        "topic": "nanbanme",
+        "correct_answers": ["//*[@id='864319']"],
+        "incorrect_answers": ["xpath=//*[@id='864320']"],
+        "expected_message": "みぎから　3こ　ぜんぶにいろを　ぬるよ。"
+    },
+      {
+        "id": "nanb_006",
+        "topic": "nanbanme",
+        "correct_answers": ["2","5"],
+        "incorrect_answers": ["1","4"],
+        "expected_message": "ひだりと　みぎをまちがえないようにね。"
+    },
+    {
+        "id": "nanb_006",
+        "topic": "nanbanme",
+        "correct_answers": ["4","3"],
+        "incorrect_answers": ["1","2"],
+        "expected_message": "ひだりと　みぎをまちがえないようにね。"
+    }
+]

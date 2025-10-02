@@ -1,5 +1,0 @@
-テスト開始: 国語ページの遷移と「もどる」ボタンのテスト
-
-Test function finished.
-
-📸 スクリーンショットエラー: screenshots\test_main_menu_navigation[chromium-国語ページの遷移と「もどる」ボタンのテスト]_FAILURE.png

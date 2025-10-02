@@ -1,8 +1,6 @@
 import pytest
 from playwright.sync_api import Page, expect
-import time
 import os
-import re
 
 # ===================================================================
 # == FIXTURE SETUP: Chuẩn bị môi trường cho bài test ==
@@ -31,7 +29,6 @@ def kanji_go_quiz_page(logged_in_page: Page):
 # ===================================================================
 # == LỚP TEST: Chứa các kịch bản test cho chữ "五" ==
 # ===================================================================
-
 class TestGo:
 
     # THÊM `ai_vision_verifier` VÀO DANH SÁCH THAM SỐ

@@ -1,9 +1,0 @@
-
-Login successful and main menu is ready.
-テスト開始: CBTページの遷移と「もどる」ボタンのテスト
->>> 遷移先のページを正しく表示しました。
->>> 「もどる」テキストをクリックして戻ります。
->>> メインメニューに正しく戻りました。
-
-
-Test function finished.
