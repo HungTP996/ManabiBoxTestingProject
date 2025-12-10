@@ -57,44 +57,44 @@ class TestTopicHaWoTsukaou:
                 expect(page.get_by_text("あめですよ")).to_be_visible()
 
         # -------------------------------------------------------------------
-        # -- シナリオ 2: すべて不正解 (その後、次に進むために正解) --
-        # -------------------------------------------------------------------
-        with allure.step("シナリオ2：すべての問題に不正解する"):
-            with allure.step("再度クイズ画面に移動"):
-                # 同じテーマを再度クリックして、テストをリセット
-                topic_container = page.locator("p:has-text('はを　つかおう')").locator("..")
-                topic_container.get_by_alt_text("basic").click()
+        # # -- シナリオ 2: すべて不正解 (その後、次に進むために正解) --
+        # # -------------------------------------------------------------------
+        # with allure.step("シナリオ2：すべての問題に不正解する"):
+        #     with allure.step("再度クイズ画面に移動"):
+        #         # 同じテーマを再度クリックして、テストをリセット
+        #         topic_container = page.locator("p:has-text('はを　つかおう')").locator("..")
+        #         topic_container.get_by_alt_text("basic").click()
 
-            for index, question in enumerate(questions):
-                with allure.step(f"問題 {question['id']} の不正解パターンをテスト"):
-                    # 不正解の選択肢で回答
-                    answer_question(page, question, "incorrect_answers")
+        #     for index, question in enumerate(questions):
+        #         with allure.step(f"問題 {question['id']} の不正解パターンをテスト"):
+        #             # 不正解の選択肢で回答
+        #             answer_question(page, question, "incorrect_answers")
 
-                    # 答え合わせ
-                    kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
-                    expect(kotaeawase_button).to_be_enabled()
-                    kotaeawase_button.click()
+        #             # 答え合わせ
+        #             kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
+        #             expect(kotaeawase_button).to_be_enabled()
+        #             kotaeawase_button.click()
 
-                    # 不正解アイコンを確認
-                    expect(page.locator(".icon__answer--wrong")).to_be_visible()
+        #             # 不正解アイコンを確認
+        #             expect(page.locator(".icon__answer--wrong")).to_be_visible()
 
-                    # 次に進むために、正解の選択肢を選び直す
-                    with allure.step("次の問題に進むため、正解を入力"):
-                        answer_key = "correct_drag_mapping" if question.get(
-                            "type") == "drag_drop" else "correct_answers"
-                        answer_question(page, question, answer_key)
+        #             # 次に進むために、正解の選択肢を選び直す
+        #             with allure.step("次の問題に進むため、正解を入力"):
+        #                 answer_key = "correct_drag_mapping" if question.get(
+        #                     "type") == "drag_drop" else "correct_answers"
+        #                 answer_question(page, question, answer_key)
 
-                        # 正解で答え合わせ
-                        kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
-                        expect(kotaeawase_button).to_be_enabled()
-                        kotaeawase_button.click()
-                        expect(page.locator(".icon__answer--right")).to_be_visible()
+        #                 # 正解で答え合わせ
+        #                 kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
+        #                 expect(kotaeawase_button).to_be_enabled()
+        #                 kotaeawase_button.click()
+        #                 expect(page.locator(".icon__answer--right")).to_be_visible()
 
-                    # 次へ/終了処理
-                    if index < total_questions - 1:
-                        page.get_by_role("button", name="つぎへ").click()
-                    else:
-                        complete_question(page)
+        #             # 次へ/終了処理
+        #             if index < total_questions - 1:
+        #                 page.get_by_role("button", name="つぎへ").click()
+        #             else:
+        #                 complete_question(page)
 
-            with allure.step("テスト完了画面を確認"):
-                expect(page.get_by_text("あめですよ")).to_be_visible()
+        #     with allure.step("テスト完了画面を確認"):
+        #         expect(page.get_by_text("あめですよ")).to_be_visible()

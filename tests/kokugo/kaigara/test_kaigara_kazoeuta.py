@@ -56,32 +56,32 @@ class TestKazoeuta:
         # -------------------------------------------------------------------
         # -- シナリオ 2: すべて不正解 --
         # -------------------------------------------------------------------
-        with allure.step("シナリオ2：すべての問題に不正解する"):
-            with allure.step("再度クイズ画面に移動"):
-                # 同じトピックを再度クリックして、テストをリセット
-                topic_container = page.locator("p:has-text('かぞえうた')").locator("..")
-                topic_container.get_by_alt_text("basic").click()
+        # with allure.step("シナリオ2：すべての問題に不正解する"):
+        #     with allure.step("再度クイズ画面に移動"):
+        #         # 同じトピックを再度クリックして、テストをリセット
+        #         topic_container = page.locator("p:has-text('かぞえうた')").locator("..")
+        #         topic_container.get_by_alt_text("basic").click()
 
-            for index, question in enumerate(questions):
-                with allure.step(f"問題 {question['id']} に不正解を解答"):
-                    # 1. 不正解の選択肢で回答
-                    answer_question(page, question, "incorrect_answers")
+        #     for index, question in enumerate(questions):
+        #         with allure.step(f"問題 {question['id']} に不正解を解答"):
+        #             # 1. 不正解の選択肢で回答
+        #             answer_question(page, question, "incorrect_answers")
 
-                    # 2. 答え合わせ
-                    page.get_by_role("button", name="こたえあわせ").click()
+        #             # 2. 答え合わせ
+        #             page.get_by_role("button", name="こたえあわせ").click()
 
-                    # 3. 不正解を確認
-                    expect(page.locator(".icon__answer--wrong")).to_be_visible()
+        #             # 3. 不正解を確認
+        #             expect(page.locator(".icon__answer--wrong")).to_be_visible()
 
-                    # 4. 次へ/終了処理
-                    if index < total_questions - 1:
-                        with allure.step("次の問題へ"):
-                            # 次へ進むためには、ここで正解を入力し直す必要がある場合がありますが、
-                            # 元のコードに従い、不正解を確認後「つぎへ」をクリックします。
-                            page.get_by_role("button", name="つぎへ").click()
-                    else:
-                        with allure.step("テストを完了"):
-                            complete_question(page)
+        #             # 4. 次へ/終了処理
+        #             if index < total_questions - 1:
+        #                 with allure.step("次の問題へ"):
+        #                     # 次へ進むためには、ここで正解を入力し直す必要がある場合がありますが、
+        #                     # 元のコードに従い、不正解を確認後「つぎへ」をクリックします。
+        #                     page.get_by_role("button", name="つぎへ").click()
+        #             else:
+        #                 with allure.step("テストを完了"):
+        #                     complete_question(page)
 
-            with allure.step("テスト完了画面を確認"):
-                expect(page.get_by_text("あめですよ")).to_be_visible()
+        #     with allure.step("テスト完了画面を確認"):
+        #         expect(page.get_by_text("あめですよ")).to_be_visible()

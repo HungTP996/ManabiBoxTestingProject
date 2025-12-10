@@ -100,18 +100,18 @@
       "type": "drag_drop",
       "items_to_drag": {
         "item1": { "text": "にわとりは　とばない。", "index": 0 },
-        "item2": { "text": "ねずみは　ちいさい。", "index": 0 },
+        "item2": { "text": "ねずみわ　ちいさい。", "index": 0 },
         "item3": { "text": "はみがきは　だいじだ。", "index": 0 },
-        "item4": { "text": "わには　およぐ。", "index": 0 }
+        "item4": { "text": "わにわ　およぐ。", "index": 0 }
       },
       "drop_zones": {
-        "zone1": ".h-112px",
-        "zone2": ".h-112px"
+        "zone1": { "locator": ".h-112px", "index": 0 },
+        "zone2": { "locator": ".h-112px", "index": 1 }
       },
       "correct_drag_mapping": [
         { "item": "item1", "zone": "zone1" },
-        { "item": "item2", "zone": "zone2" },
         { "item": "item3", "zone": "zone1" },
+        { "item": "item2", "zone": "zone2" },
         { "item": "item4", "zone": "zone2" }
       ],
       "incorrect_drag_mapping": [

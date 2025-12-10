@@ -87,7 +87,7 @@ def ai_vision_verifier():
     print("\n--- [SESSION SCOPE] AI Vision Verifierを初期化中 ---")
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        pytest.fail("GEMINI_API_KEYが見つかりません。.envファイルを確認してください。")
+        pytest.skip("GEMINI_API_KEYが見つかりません。.envファイルを確認してください。", allow_module_level=True)
 
     genai.configure(api_key=api_key)
     # 画像解析に適したモデルを使用
@@ -108,8 +108,8 @@ def ai_vision_verifier():
             return ai_answer == "YES"
 
         except Exception as e:
-            pytest.fail(f"AI APIの呼び出し中にエラーが発生しました: {e}")
-            return False
+            # Ném ngoại lệ để test có thể skip/handle thay vì fail cứng
+            raise RuntimeError(f"AI API error: {e}")
 
     yield _verify
 

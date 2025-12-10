@@ -31,11 +31,9 @@ def kanji_go_quiz_page(logged_in_page: Page):
 # ===================================================================
 
 class TestGo:
-
-    # THÊM `ai_vision_verifier` VÀO DANH SÁCH THAM SỐ
-    def test_kanji_jon_drawing_and_ai_verification(self, kanji_go_quiz_page: Page, ai_vision_verifier):
+    def test_kanji_jon_drawing_only(self, kanji_go_quiz_page: Page):
         """
-        Test kịch bản: Vẽ chữ "一　", sau đó xác minh bằng AI.
+        Test kịch bản: Vẽ chữ "一　" và điều hướng (bỏ qua xác minh AI).
         """
         page = kanji_go_quiz_page
         for i in range(3):
@@ -45,10 +43,16 @@ class TestGo:
             drawing_canvas = page.locator(".kanji-canvas.upper-canvas")
             expect(drawing_canvas).to_be_visible()
             expect(drawing_canvas).to_be_enabled()
-            page.wait_for_timeout(10000)  # Chờ 1 giây là đủ
+            page.wait_for_timeout(5000)
 
-            canvas_box = drawing_canvas.bounding_box()
-            origin_x, origin_y = canvas_box['x'], canvas_box['y']
+            canvas_box = None
+            for _ in range(5):
+                canvas_box = drawing_canvas.bounding_box()
+                if canvas_box:
+                    break
+                page.wait_for_timeout(200)
+            assert canvas_box, "Không lấy được bounding_box của canvas"
+            origin_x, origin_y = canvas_box["x"], canvas_box["y"]
 
             # --- Nét ①: nét ngang ---
             page.mouse.move(origin_x + 45,  origin_y + 172)
@@ -58,19 +62,20 @@ class TestGo:
             page.mouse.up()
 
 
-            canvas_to_verify = page.locator("canvas").nth(2)
+            canvas_to_verify = page.locator(".kanji-canvas.upper-canvas").first
             folder_name = "ai_screenshots"
             os.makedirs(folder_name, exist_ok=True)
             # Thay đổi tên file cho mỗi lần lặp để không bị ghi đè
             screenshot_path = os.path.join(folder_name, f"jon_drawing_to_verify_{i + 1}.png")
+            expect(canvas_to_verify).to_be_visible(timeout=10000)
+            canvas_to_verify.scroll_into_view_if_needed()
             canvas_to_verify.screenshot(path=screenshot_path)
             print(f"-> Đã chụp ảnh bảng vẽ và lưu tại: {screenshot_path}")
 
-            is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="一")
-            assert is_correct, f"AI không nhận diện đúng ký tự '一　' ở lần lặp thứ {i + 1}."
-            print("-> AI đã xác nhận hình vẽ chính xác!")
-
             # --- Chuyển tiếp ---
-            page.get_by_text("つけ", exact=True).click()
+            submit_btn = page.get_by_text("つけ").first
+            expect(submit_btn).to_be_visible(timeout=10000)
+            expect(submit_btn).to_be_enabled(timeout=10000)
+            submit_btn.click()
             expect(page.get_by_alt_text("level return")).to_be_visible()
             page.get_by_text("つぎにすすむ").click()

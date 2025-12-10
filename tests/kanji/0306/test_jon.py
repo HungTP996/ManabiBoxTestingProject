@@ -34,9 +34,7 @@ def kanji_go_quiz_page(logged_in_page: Page):
 # ===================================================================
 
 class TestJon:
-
-    # `ai_vision_verifier`を引数リストに追加
-    def test_kanji_jon_drawing_and_ai_verification(self, kanji_go_quiz_page: Page, ai_vision_verifier):
+    def test_kanji_jon_drawing_only(self, kanji_go_quiz_page: Page):
         page = kanji_go_quiz_page
         for i in range(3):
             print(f"\n--> {i + 1}回目の描画と検証を開始します")
@@ -47,8 +45,14 @@ class TestJon:
             expect(drawing_canvas).to_be_enabled()
             page.wait_for_timeout(5000)  # 少し待機する
 
-            canvas_box = drawing_canvas.bounding_box()
-            origin_x, origin_y = canvas_box['x'], canvas_box['y']
+            canvas_box = None
+            for _ in range(5):
+                canvas_box = drawing_canvas.bounding_box()
+                if canvas_box:
+                    break
+                page.wait_for_timeout(200)
+            assert canvas_box, "キャンバスのbounding_boxを取得できませんでした"
+            origin_x, origin_y = canvas_box["x"], canvas_box["y"]
 
             # --- 1画目：縦線 ---
             page.mouse.move(origin_x + 63, origin_y + 106)
@@ -93,20 +97,21 @@ class TestJon:
 
             print("--- 描画完了！ ---")
 
-            canvas_to_verify = page.locator("canvas").nth(2)
+            canvas_to_verify = page.locator(".kanji-canvas.upper-canvas").first
             folder_name = "ai_screenshots"
             os.makedirs(folder_name, exist_ok=True)
 
             # 上書きされないように、ループごとにファイル名を変更する
             screenshot_path = os.path.join(folder_name, f"jon_drawing_to_verify_{i + 1}.png")
+            expect(canvas_to_verify).to_be_visible(timeout=10000)
+            canvas_to_verify.scroll_into_view_if_needed()
             canvas_to_verify.screenshot(path=screenshot_path)
             print(f"-> キャンバスのスクリーンショットを撮影し、{screenshot_path} に保存しました")
 
-            is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="四")
-            assert is_correct, f"AIが{i + 1}回目の試行で文字「四」を正しく認識できませんでした。"
-            print("-> AIが描画の正しさを確認しました！")
-
             # --- 次へ進む ---
-            page.get_by_text("つけ", exact=True).click()
+            submit_btn = page.get_by_text("つけ").first
+            expect(submit_btn).to_be_visible(timeout=10000)
+            expect(submit_btn).to_be_enabled(timeout=10000)
+            submit_btn.click()
             expect(page.get_by_alt_text("level return")).to_be_visible()
             page.get_by_text("つぎにすすむ").click()

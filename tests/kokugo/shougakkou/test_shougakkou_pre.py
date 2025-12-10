@@ -48,6 +48,11 @@ def test_full_quiz_flow(drawing_page: Page, quiz_data: dict):
         for i, question_data in enumerate(drawing_data_list):
             word = question_data.get("word")
             with allure.step(f"描画問題 {i + 1}/{total_drawing_questions}: 「{word}」"):
+                with allure.step("Canvasの読み込みを待機"):
+                    canvas = page.locator("canvas").first
+                    expect(canvas).to_be_visible(timeout=15000)
+                    page.wait_for_timeout(1000)  # 安全のための待機
+
                 # 1. 文字を描画
                 draw_character(page, question_data)
                 # 2. 採点 および '次へ' ボタンをクリック

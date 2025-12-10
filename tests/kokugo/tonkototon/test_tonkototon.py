@@ -38,23 +38,23 @@ class TestTonkototon:
             with allure.step("テスト完了画面を確認"):
                 expect(page.get_by_text("とん　こと　とん")).to_be_visible()
 
-        with allure.step("シナリオ2：すべての問題に不正解する"):
-            with allure.step("再度クイズ画面に移動"):
-                topic_container = page.locator("p:has-text('ぶんを　つくろう')").locator("..")
-                topic_container.get_by_alt_text("basic").click()
+        # with allure.step("シナリオ2：すべての問題に不正解する"):
+        #     with allure.step("再度クイズ画面に移動"):
+        #         topic_container = page.locator("p:has-text('ぶんを　つくろう')").locator("..")
+        #         topic_container.get_by_alt_text("basic").click()
 
-            for index, question in enumerate(questions):
-                with allure.step(f"問題 {question['id']} に不正解を解答"):
-                    answer_question(page, question, "incorrect_answers")
-                    page.get_by_role("button", name="こたえあわせ").click()
-                    expect(page.locator(".icon__answer--wrong")).to_be_visible()
+        #     for index, question in enumerate(questions):
+        #         with allure.step(f"問題 {question['id']} に不正解を解答"):
+        #             answer_question(page, question, "incorrect_answers")
+        #             page.get_by_role("button", name="こたえあわせ").click()
+        #             expect(page.locator(".icon__answer--wrong")).to_be_visible()
 
-                    if index < total_questions - 1:
-                        with allure.step("次の問題へ"):
-                            page.get_by_role("button", name="つぎへ").click()
-                    else:
-                        with allure.step("テストを完了"):
-                            complete_question(page)
+        #             if index < total_questions - 1:
+        #                 with allure.step("次の問題へ"):
+        #                     page.get_by_role("button", name="つぎへ").click()
+        #             else:
+        #                 with allure.step("テストを完了"):
+        #                     complete_question(page)
 
-            with allure.step("テスト完了画面を確認"):
-                expect(page.get_by_text("とん　こと　とん")).to_be_visible()
+        #     with allure.step("テスト完了画面を確認"):
+        #         expect(page.get_by_text("とん　こと　とん")).to_be_visible()

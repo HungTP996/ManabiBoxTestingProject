@@ -61,10 +61,17 @@ class TestKanjiHana:
             drawing_canvas = page.locator(".kanji-canvas.upper-canvas")
             expect(drawing_canvas).to_be_visible()
 
-            # 描画前の安定待機
-            page.wait_for_timeout(1000)
+            # 描画前の安定待機 - キャンバスが完全に準備できるまで待機
+            page.wait_for_timeout(5000)
 
-            canvas_box = drawing_canvas.bounding_box()
+            # キャンバスのバウンディングボックスが確実に取得できるまで待機
+            canvas_box = None
+            for _ in range(5):
+                canvas_box = drawing_canvas.bounding_box()
+                if canvas_box:
+                    break
+                page.wait_for_timeout(200)
+
             if not canvas_box:
                 raise Exception("キャンバスが見つかりません")
 
@@ -138,8 +145,15 @@ class TestKanjiHana:
             if not marutsuke_button.is_visible():
                 marutsuke_button = page.get_by_text("つけ")
 
+            # Nếu vẫn bị overlay chặn, chờ state enabled + visible rồi mới click force
             expect(marutsuke_button).to_be_enabled(timeout=10000)
-            marutsuke_button.click()
+            expect(marutsuke_button).to_be_visible(timeout=10000)
+            marutsuke_button.scroll_into_view_if_needed()
+            try:
+                marutsuke_button.click(timeout=10000)
+            except Exception:
+                # overlay chặn; dùng force
+                marutsuke_button.click(force=True, timeout=5000)
             print("--> 「まるつけ」をクリックしました")
 
             # アニメーション待機
