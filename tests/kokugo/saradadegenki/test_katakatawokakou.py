@@ -4,37 +4,49 @@ from playwright.sync_api import Page, expect
 from tests.utils.choice_helpers import answer_question
 from tests.utils.complete_helpers import complete_question
 
+
 @pytest.fixture(scope="class")
 def quiz_session(logged_in_page: Page):
-    """Fixture này vào bài làm của chủ đề 'かたかなを　かこう'."""
+    """「かたかなを かこう」のテーマのテストを開始するためのフィクスチャ。"""
     page = logged_in_page
-    with allure.step("セットアップ：テストセッションを開始 (Setup: Bắt đầu phiên test)"):
+    with allure.step("セットアップ：テストセッションを開始"):
         page.get_by_alt_text("国語").click()
+        # トピックコンテナを特定し、クリック
         topic_container = page.locator("p:has-text('かたかなを　かこう')").nth(0).locator("..")
         topic_container.get_by_alt_text("basic").click()
     yield page
 
+
 class TestKatakana:
 
-    def test_both_scenarios_sequentially(self, quiz_session: Page, kokugo_test_data: dict):
+    def test_all_questions_correct(self, quiz_session: Page, kokugo_test_data: dict):
         """
-        Test này thực hiện một luồng liên tục, bao gồm kịch bản đúng và sai.
+        このテストは、正解のシナリオを実行します。（元のコードのシナリオ2は省略されています）
         """
         page = quiz_session
         questions = kokugo_test_data["KATAKANAWOKAKOU"]
         total_questions = len(questions)
 
-        with allure.step("シナリオ1：すべての問題に正しく解答する "):
+        with allure.step("シナリオ1：すべての問題に正しく解答する"):
             for index, question in enumerate(questions):
-                with allure.step(f"問題 {question['id']} に正しく解答 (Trả lời đúng câu hỏi {question['id']})"):
+                with allure.step(f"問題 {question['id']} に正しく解答"):
+                    # 1. 回答
                     answer_question(page, question, "correct_answers")
+
+                    # 2. 答え合わせ
                     page.get_by_role("button", name="こたえあわせ").click()
+
+                    # 3. 正解を確認
                     expect(page.locator(".icon__answer--right")).to_be_visible()
 
+                    # 4. 次へ/終了処理
                     if index < total_questions - 1:
-                        page.get_by_role("button", name="つぎへ").click()
+                        with allure.step("次の問題へ"):
+                            page.get_by_role("button", name="つぎへ").click()
                     else:
-                        complete_question(page)
+                        with allure.step("テストを完了"):
+                            complete_question(page)
 
-            with allure.step("テスト完了を確認 "):
+            with allure.step("テスト完了画面を確認"):
+                # 完了画面に表示されるトピック名などを確認
                 expect(page.get_by_text("とん　こと　とん")).to_be_visible()

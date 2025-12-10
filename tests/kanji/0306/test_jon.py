@@ -7,9 +7,6 @@ import os
 # ===================================================================
 @pytest.fixture(scope="function")
 def kanji_go_quiz_page(logged_in_page: Page):
-    """
-    このフィクスチャは、「四」という漢字の演習画面に到達するまでの全プロセスを実行します。
-    """
     page = logged_in_page
     print("\n--- [セットアップ] 「四」の演習画面へのナビゲーションを開始します ---")
 
@@ -40,9 +37,6 @@ class TestJon:
 
     # `ai_vision_verifier`を引数リストに追加
     def test_kanji_jon_drawing_and_ai_verification(self, kanji_go_quiz_page: Page, ai_vision_verifier):
-        """
-        テストシナリオ：「四」という文字を描画し、その後AIで検証する。
-        """
         page = kanji_go_quiz_page
         for i in range(3):
             print(f"\n--> {i + 1}回目の描画と検証を開始します")

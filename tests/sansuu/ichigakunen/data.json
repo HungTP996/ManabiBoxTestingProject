@@ -26,33 +26,5 @@
         "correct_answers": ["//*[@id='567151']"],
         "incorrect_answers": ["//*[@id='567150']"],
         "expected_message": "ちょうちょの　ほうが　おおいね。"
-    },
-      {
-        "id": "TC001",
-        "topic": "wakuwaku_gakkou",
-        "correct_answers": ["//*[@id='567144']"],
-        "incorrect_answers": ["//*[@id='567145']"],
-        "expected_message": "ちょうちょの　ほうが　おおいね。"
-    },
-    {
-        "id": "TC002",
-        "topic": "wakuwaku_gakkou",
-        "correct_answers": ["//*[@id='567146']"],
-        "incorrect_answers": ["//*[@id='567147']"],
-        "expected_message": "うさぎの　ほうが　おおいね。"
-    },
-    {
-        "id": "TC003",
-        "topic": "wakuwaku_gakkou",
-        "correct_answers": ["//*[@id='567148']"],
-        "incorrect_answers": ["//*[@id='567149']"],
-        "expected_message": "はなの　ほうが　おおいね。"
-    },
-    {
-        "id": "TC004",
-        "topic": "wakuwaku_gakkou",
-        "correct_answers": ["//*[@id='567151']"],
-        "incorrect_answers": ["//*[@id='567150']"],
-        "expected_message": "ちょうちょの　ほうが　おおいね。"
     }
 ]

@@ -12,7 +12,7 @@ config/：プロジェクトの各種設定をまとめるディレクトリ。
 python3 -m venv venv
 
 # 仮想環境を有効化
-source venv/Scripts/activate
+.\venv\Scripts\Activate
 
 # テストライブラリをインストール
 pip install -r requirements.txt
@@ -32,10 +32,10 @@ allure --version
 pytest
 
 # 特定のテストファイルを実行
-pytest tests/frontend/test_*.py
+pytest tests/kokugo/test_*.py
 
 # 特定のテスト関数を実行
-pytest tests/frontend/test_*.py -k "test_*"
+pytest tests/kokugo/test_*.py -k "test_*"
 
 # 仮想環境を停止
 deactivate
