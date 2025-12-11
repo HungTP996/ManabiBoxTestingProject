@@ -145,14 +145,14 @@ class TestKanjiHana:
             if not marutsuke_button.is_visible():
                 marutsuke_button = page.get_by_text("つけ")
 
-            # Nếu vẫn bị overlay chặn, chờ state enabled + visible rồi mới click force
+            # オーバーレイがまだブロックしている場合、enabled + visible 状態になるのを待ってから force クリック
             expect(marutsuke_button).to_be_enabled(timeout=10000)
             expect(marutsuke_button).to_be_visible(timeout=10000)
             marutsuke_button.scroll_into_view_if_needed()
             try:
                 marutsuke_button.click(timeout=10000)
             except Exception:
-                # overlay chặn; dùng force
+                # オーバーレイがブロック; force を使用
                 marutsuke_button.click(force=True, timeout=5000)
             print("--> 「まるつけ」をクリックしました")
 

@@ -43,11 +43,11 @@ def get_test_cases_by_topic(topic_name):
     with open(json_path, 'r', encoding='utf-8') as f:
         all_data = json.load(f)
 
-    # Topic lọc dữ liệu
+    # データのフィルタリング
     raw_cases = [case for case in all_data if case.get("topic") == topic_name]
 
-    # --- KHẮC PHỤC LỖI TRÙNG LẶP ---
-    # Loại bỏ các test case có ID trùng nhau để tránh vòng lặp chạy quá số lượng câu hỏi thực tế
+    # --- 重複の修正 ---
+    # 実際の問題数を超えてループしないように、IDが重複しているテストケースを除外する
     unique_cases = []
     seen_ids = set()
 
@@ -69,10 +69,10 @@ class TestSanSuu:
         # テストデータの読み込み
         test_cases = get_test_cases_by_topic("wakuwaku_gakkou")
 
-        print(f"\n--- Load được {len(test_cases)} câu hỏi (đã lọc trùng) ---")
+        print(f"\n--- {len(test_cases)} 問の問題を読み込みました（重複排除済み） ---")
         print("\n--- 問題の解答を開始します ---")
 
-        # Dùng enumerate để biết chính xác index hiện tại
+        # 現在のインデックスを正確に把握するために enumerate を使用
         for index, test_case in enumerate(test_cases):
             print(f"--- TC実行中: {test_case['id']} ---")
 
@@ -90,7 +90,7 @@ class TestSanSuu:
             feedback_text = page.get_by_text(test_case['expected_message'])
             expect(feedback_text).to_be_visible()
 
-            # Logic chuyển câu: Nếu chưa phải là câu cuối cùng trong danh sách
+            # 問題遷移のロジック: リストの最後の問題でない場合
             if index < len(test_cases) - 1:
                 print("--> 次の問題へ移動します...")
                 next_button = page.get_by_role("button", name="つぎへ")
@@ -106,7 +106,7 @@ class TestSanSuu:
 
         # 「ふりかえり」ボタンをクリック
         review_button = page.get_by_role("button", name="ふりかえり")
-        # Đợi nút hiển thị (quan trọng vì sau câu cuối cần 1 chút thời gian animation)
+        # ボタンが表示されるのを待機（最後の問題の後はアニメーションに時間がかかるため重要）
         expect(review_button).to_be_visible(timeout=5000)
         review_button.click()
 

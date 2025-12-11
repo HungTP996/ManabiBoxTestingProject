@@ -7,7 +7,7 @@ from pathlib import Path
 def go_quiz_page(logged_in_page: Page):
     page = logged_in_page
 
-    # Chờ load xong
+    # 読み込み完了を待機
     page.wait_for_load_state("networkidle")
 
     # ステップ1: 「計算」科目をクリック
@@ -33,7 +33,7 @@ def get_test_cases(topic_name):
     if not json_path.exists():
         json_path = Path('tests/keisan/ichigakunen/data.json')
         if not json_path.exists():
-            raise FileNotFoundError(f"Không tìm thấy file data.json tại: {current_dir}")
+            raise FileNotFoundError(f"data.json が見つかりません: {current_dir}")
 
     with open(json_path, 'r', encoding='utf-8') as f:
         all_data = json.load(f)
@@ -45,7 +45,7 @@ class TestKazutoSuuji:
     def test_verify_happycase_kazutosuuji(self, go_quiz_page: Page):
         page = go_quiz_page
 
-        # Load data thông qua hàm helper mới
+        # 新しいヘルパー関数を介してデータをロード
         test_cases = get_test_cases("kazutosuuji")
 
         print("\n--- 問題の解答を開始します ---")
@@ -70,7 +70,7 @@ class TestKazutoSuuji:
                 next_button = page.get_by_role("button", name="つぎへ")
                 next_button.click()
 
-                # Chờ animation chuyển câu
+                # 画面遷移アニメーションの待機
                 page.wait_for_timeout(500)
                 # 新しい問題に移動したことを確認
                 expect(check_answer_button).to_be_visible(timeout=10000)
@@ -78,7 +78,7 @@ class TestKazutoSuuji:
         print("\n--- 全ての問題が完了しました。ふりかえりを開始します。 ---")
 
         review_button = page.get_by_role("button", name="ふりかえり")
-        # Đợi nút hiển thị trước khi click
+        # クリックする前にボタンが表示されるのを待機
         expect(review_button).to_be_visible(timeout=5000)
         review_button.click()
 

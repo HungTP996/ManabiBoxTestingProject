@@ -8,12 +8,11 @@ import time
 def draw_character(page: Page, question_data: dict):
     """
     指定されたデータに基づいてCanvas上に文字を描画する。
-    (Vẽ ký tự lên Canvas dựa trên dữ liệu được chỉ định.)
     """
     # 描画キャンバスのロケーターを取得
     drawing_canvas = page.locator(".kanji-canvas.upper-canvas")
 
-    with allure.step("キャンバスが表示され、安定するのを待機 (バウンディングボックスの確認)"): # Chờ canvas hiển thị và ổn định (có bounding box)
+    with allure.step("キャンバスが表示され、安定するのを待機 (バウンディングボックスの確認)"):
         start_time = time.time()
         timeout_seconds = 15
         canvas_box = None
@@ -24,36 +23,36 @@ def draw_character(page: Page, question_data: dict):
                 canvas_box = drawing_canvas.bounding_box()
 
             if canvas_box:
-                allure.attach("Canvasがレンダリングされました", f"Box: {canvas_box}") # Canvas đã được render
+                allure.attach("Canvasがレンダリングされました", f"Box: {canvas_box}")
                 break
 
             if time.time() - start_time > timeout_seconds:
                 page.screenshot(path="screenshots/DEBUG_draw_character_fail.png")
-                raise Exception(f"Canvasは{timeout_seconds}秒後にレンダリングされませんでした") # Canvas không bao giờ được render sau...
+                raise Exception(f"Canvasは{timeout_seconds}秒後にレンダリングされませんでした")
 
             page.wait_for_timeout(100)
 
-    with allure.step("キャンバスのJavaScript初期化のため1200ms待機 (JS init)"): # Chờ 1200ms để JavaScript của canvas khởi tạo
+    with allure.step("キャンバスのJavaScript初期化のため1200ms待機 (JS init)"):
         page.wait_for_timeout(1200)
 
-    with allure.step("ストロークの実行を開始 (各ストローク後に300ms待機)"): # Bắt đầu thực hiện các nét vẽ (nghỉ 300ms sau mỗi nét)
+    with allure.step("ストロークの実行を開始 (各ストローク後に300ms待機)"):
         if not canvas_box:
-            raise Exception("論理エラー: ポーリング後もキャンバスが見つかりません。") # Lỗi logic: Vẫn không tìm thấy canvas sau khi poll.
+            raise Exception("論理エラー: ポーリング後もキャンバスが見つかりません。")
 
-        # Canvasの左上隅の座標 (Tọa độ góc trên bên trái của Canvas)
+        # Canvasの左上隅の座標
         origin_x, origin_y = canvas_box['x'], canvas_box['y']
 
         strokes = question_data.get("strokes", [])
         if not strokes:
-            print("警告: 描画する「strokes」データがありません。") # Cảnh báo: Không có dữ liệu 'strokes' để vẽ.
+            print("警告: 描画する「strokes」データがありません。")
             return
 
-        # 最初のストロークを実行 (Thực hiện nét vẽ đầu tiên)
+        # 最初のストロークを実行
         if strokes and strokes[0].get("action") == "move":
             # 最初の座標に移動
             page.mouse.move(origin_x + strokes[0]["x"], origin_y + strokes[0]["y"])
 
-        # 残りのストロークを描画 (Vẽ các nét còn lại)
+        # 残りのストロークを描画
         for point in strokes[1:]:
             action = point.get("action")
 

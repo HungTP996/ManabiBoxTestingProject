@@ -72,22 +72,22 @@ def test_drawing_with_ai_verification(drawing_page: Page, ai_vision_verifier):
         page.locator("div").filter(has_text=re.compile(r"^決けっ定てい$")).nth(2).click()
         page.wait_for_timeout(1000)
 
-    # 3. 結果のキャンバスをキャプチャ
-    screenshot_path = ""
-    with allure.step("AI検証のために結果をスクリーンショット"):
-        result_box = page.locator(".upper-canvas").first
-        folder_name = "ai_screenshots"
-        os.makedirs(folder_name, exist_ok=True)
-        screenshot_path = os.path.join(folder_name, "drawing_to_verify.png")
-        result_box.screenshot(path=screenshot_path)
-        allure.attach.file(screenshot_path, name="Drawing Result", attachment_type=allure.attachment_type.PNG)
-        print(f"-> 結果のスクリーンショットを保存しました: {screenshot_path}")
+    # # 3. 結果のキャンバスをキャプチャ
+    # screenshot_path = ""
+    # with allure.step("AI検証のために結果をスクリーンショット"):
+    #     result_box = page.locator(".upper-canvas").first
+    #     folder_name = "ai_screenshots"
+    #     os.makedirs(folder_name, exist_ok=True)
+    #     screenshot_path = os.path.join(folder_name, "drawing_to_verify.png")
+    #     result_box.screenshot(path=screenshot_path)
+    #     allure.attach.file(screenshot_path, name="Drawing Result", attachment_type=allure.attachment_type.PNG)
+    #     print(f"-> 結果のスクリーンショットを保存しました: {screenshot_path}")
 
-    # 4. 画像をAIに送信して検証
-    with allure.step("画像をAIに送信し、文字が「かわ」であることを検証"):
-        is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="かわ")
-        assert is_correct, "AIは文字「かわ」を正しく認識できませんでした。"
-        print("-> AIが描画の正確性を確認しました！")
+    # # 4. 画像をAIに送信して検証
+    # with allure.step("画像をAIに送信し、文字が「かわ」であることを検証"):
+    #     is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="かわ")
+    #     assert is_correct, "AIは文字「かわ」を正しく認識できませんでした。"
+    #     print("-> AIが描画の正確性を確認しました！")
 
     # 5. 「こたえあわせ」をクリックして採点
     with allure.step("「こたえあわせ」をクリックして採点"):

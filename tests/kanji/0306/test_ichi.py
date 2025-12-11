@@ -3,43 +3,43 @@ from playwright.sync_api import Page, expect
 import os
 
 # ===================================================================
-# == FIXTURE SETUP: Chuẩn bị môi trường cho bài test ==
+# == FIXTURE SETUP: テスト環境の準備 ==
 # ===================================================================
 @pytest.fixture(scope="function")
 def kanji_go_quiz_page(logged_in_page: Page):
     """
-    Fixture này thực hiện toàn bộ quá trình để vào bài làm của chữ "一　".
+    このフィクスチャは漢字「一」の練習画面への完全な移動を実行します。
     """
     page = logged_in_page
-    print("\n--- [SETUP] Bắt đầu điều hướng đến bài làm chữ '一　' ---")
-    # Bước 1: Click vào môn "漢字"
+    print("\n--- [SETUP] 漢字「一」の練習画面への移動を開始 ---")
+    # ステップ1: 「漢字」教科を選択
     page.get_by_alt_text("漢字").click()
-    # Chờ cho trang Kanji tải xong (kiểm tra sự hiện diện của nút "一　")
+    # Kanjiページの読み込み完了を待機（「一」ボタンの存在を確認）
     go_button_in_list = page.get_by_text("一　", exact=True)
     expect(go_button_in_list).to_be_visible(timeout=10000)
-    # Bước 2: Click vào chữ "一　" để vào xem chi tiết
+    # ステップ2: 「一」をクリックして詳細を表示
     go_button_in_list.click()
-    # Bước 3: Click "つぎにすすむ" để vào màn hình vẽ
+    # ステップ3: 「つぎにすすむ」をクリックして描画画面へ移動
     page.get_by_text("つぎにすすむ").click()
-    # Chờ màn hình vẽ xuất hiện
+    # 描画画面が表示されるのを待機
     expect(page.locator(".kanji-canvas.upper-canvas")).to_be_visible()
-    print("--- [SETUP] Đã vào màn hình vẽ, sẵn sàng cho test ---")
+    print("--- [SETUP] 描画画面に到達し、テストの準備が完了 ---")
     yield page
 
 # ===================================================================
-# == LỚP TEST: Chứa các kịch bản test cho chữ "一　" ==
+# == TEST CLASS: 漢字「一」のテストシナリオ ==
 # ===================================================================
 
 class TestGo:
     def test_kanji_jon_drawing_only(self, kanji_go_quiz_page: Page):
         """
-        Test kịch bản: Vẽ chữ "一　" và điều hướng (bỏ qua xác minh AI).
+        テストシナリオ: 漢字「一」を描画し、各ステップを進める（AI検証をスキップ）。
         """
         page = kanji_go_quiz_page
         for i in range(3):
-            print(f"\n--> Bắt đầu lần vẽ và xác minh thứ {i + 1}")
+            print(f"\n--> {i + 1}回目の描画と検証を開始")
 
-            # Lấy locator của bảng vẽ và tọa độ
+            # 描画キャンバスのロケーターと座標を取得
             drawing_canvas = page.locator(".kanji-canvas.upper-canvas")
             expect(drawing_canvas).to_be_visible()
             expect(drawing_canvas).to_be_enabled()
@@ -51,10 +51,10 @@ class TestGo:
                 if canvas_box:
                     break
                 page.wait_for_timeout(200)
-            assert canvas_box, "Không lấy được bounding_box của canvas"
+            assert canvas_box, "Canvas の bounding_box が取得できません"
             origin_x, origin_y = canvas_box["x"], canvas_box["y"]
 
-            # --- Nét ①: nét ngang ---
+            # --- 画1: 横画 ---
             page.mouse.move(origin_x + 45,  origin_y + 172)
             page.mouse.down()
             page.mouse.move(origin_x + 150, origin_y + 165)
@@ -65,14 +65,14 @@ class TestGo:
             canvas_to_verify = page.locator(".kanji-canvas.upper-canvas").first
             folder_name = "ai_screenshots"
             os.makedirs(folder_name, exist_ok=True)
-            # Thay đổi tên file cho mỗi lần lặp để không bị ghi đè
+            # 各イテレーションでファイル名を変更して上書きを避ける
             screenshot_path = os.path.join(folder_name, f"jon_drawing_to_verify_{i + 1}.png")
             expect(canvas_to_verify).to_be_visible(timeout=10000)
             canvas_to_verify.scroll_into_view_if_needed()
             canvas_to_verify.screenshot(path=screenshot_path)
-            print(f"-> Đã chụp ảnh bảng vẽ và lưu tại: {screenshot_path}")
+            print(f"-> 描画キャンバスのスクリーンショットを保存: {screenshot_path}")
 
-            # --- Chuyển tiếp ---
+            # --- 遷移 ---
             submit_btn = page.get_by_text("つけ").first
             expect(submit_btn).to_be_visible(timeout=10000)
             expect(submit_btn).to_be_enabled(timeout=10000)

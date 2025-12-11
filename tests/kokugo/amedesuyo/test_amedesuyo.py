@@ -8,8 +8,8 @@ from tests.utils.complete_helpers import complete_question
 def kokugo_main_page(logged_in_page: Page):
     """クラス設定：ログイン後、国語のメインページに移動します。"""
     page = logged_in_page
-    # 2. Đổi thành allure.step()
-    with allure.step("国語のメインページに移動 (Di chuyển tới trang chính Kokugo)"):
+    # 2. allure.step() に変更
+    with allure.step("国語のメインページに移動"):
         page.get_by_alt_text("国語").click()
         # expect(page.get_by_text("あめですよ")).to_be_visible()
     yield page
@@ -34,7 +34,7 @@ class Test_AmeDesuYo:
             total_questions = len(questions)
 
         for index, question_data in enumerate(questions):
-            with allure.step(f"問題 {index + 1} に正しく解答する (Trả lời đúng câu hỏi số {index + 1})"):
+            with allure.step(f"問題 {index + 1} に正しく解答する"):
                 answer_question(page, question_data, "correct_answers")
                 kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
                 expect(kotaeawase_button).to_be_enabled(timeout=10000)
@@ -47,5 +47,5 @@ class Test_AmeDesuYo:
                 else:
                     complete_question(page)
 
-        with allure.step("テスト完了を確認 (Xác nhận hoàn thành bài test)"):
+        with allure.step("テスト完了を確認"):
             expect(page.get_by_text("あめですよ")).to_be_visible()

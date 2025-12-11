@@ -108,7 +108,7 @@ def ai_vision_verifier():
             return ai_answer == "YES"
 
         except Exception as e:
-            # Ném ngoại lệ để test có thể skip/handle thay vì fail cứng
+            # テストがスキップ/ハンドルできるように例外を投げる
             raise RuntimeError(f"AI API error: {e}")
 
     yield _verify
@@ -118,7 +118,7 @@ def ai_vision_verifier():
 def kokugo_test_data():
     current_dir = Path(__file__).parent
     file_path = current_dir / "kokugo" / "data.json"
-    print(f"--> Đang đọc file data tại: {file_path}")
+    print(f"--> データファイルを読み込み中: {file_path}")
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
