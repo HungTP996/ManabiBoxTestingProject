@@ -1,101 +1,95 @@
-# tests/ai_tests/test_kaigara_pre.py
 import pytest
-import re
-import os
 import allure
+import json
+from pathlib import Path
 from playwright.sync_api import Page, expect
+from tests.utils.choice_helpers import answer_question
+from tests.utils.drawing_helpers import draw_character
+from tests.utils.complete_helpers import confirm_score_and_proceed, complete_question
 
 
-@pytest.fixture(scope="function")
-def drawing_page(logged_in_page: Page):
-    """描画ページへ遷移するためのフィクスチャ。"""
+@pytest.fixture(scope="class")
+def quiz_session(logged_in_page: Page):
     page = logged_in_page
-    with allure.step("国語プレテストの描画ページへ移動"):
+    with allure.step("セットアップ：テストセッションを開始"):
         page.get_by_alt_text("国語").click()
-        # プレテストのトピック番号3をクリック
-        expect(page.get_by_text("プレテスト").nth(3)).to_be_visible()
-        page.get_by_text("プレテスト").nth(3).click()
+        page.locator(".p-10px > p").nth(3).click()
     yield page
 
+@pytest.fixture(scope="module")
+def quiz_data():
+    """ファイル 'kaigara_data.json' からすべてのデータをロードする。"""
+    current_file_path = Path(__file__)
+    kaigara_dir = current_file_path.parent
+    json_path = kaigara_dir / "kaigara_data.json"
 
-def draw_kawa(page: Page):
-    """ヘルパー関数：文字「かわ」の描画アクションをシミュレートする。"""
-    with allure.step("キャンバス上に文字「かわ」の描画を実行"):
-        drawing_canvas = page.locator(".kanji-canvas.upper-canvas")
-        expect(drawing_canvas).to_be_visible()
-        canvas_box = drawing_canvas.bounding_box()
-        # Canvasの左上隅の座標を取得
-        origin_x, origin_y = canvas_box['x'], canvas_box['y']
-
-        # --- 文字「か」の描画 ---
-        page.mouse.move(origin_x + 100, origin_y + 70)
-        page.mouse.down()
-        page.mouse.move(origin_x + 210, origin_y + 50)
-        page.mouse.move(origin_x + 180, origin_y + 180)
-        page.mouse.move(origin_x + 170, origin_y + 170)
-        page.mouse.up()
-        page.mouse.move(origin_x + 140, origin_y + 40)
-        page.mouse.down()
-        page.mouse.move(origin_x + 100, origin_y + 160)
-        page.mouse.up()
-        page.mouse.move(origin_x + 200, origin_y + 60)
-        page.mouse.down()
-        page.mouse.move(origin_x + 230, origin_y + 80)
-        page.mouse.up()
-
-        # --- 文字「わ」の描画 ---
-        page.mouse.move(origin_x + 100, origin_y + 200)
-        page.mouse.down()
-        page.mouse.move(origin_x + 90, origin_y + 320)
-        page.mouse.up()
-        page.mouse.move(origin_x + 90, origin_y + 220)
-        page.mouse.down()
-        page.mouse.move(origin_x + 170, origin_y + 180)
-        page.mouse.move(origin_x + 50, origin_y + 300)
-        page.mouse.move(origin_x + 190, origin_y + 210)
-        page.mouse.move(origin_x + 200, origin_y + 275)
-        page.mouse.move(origin_x + 150, origin_y + 320)
-        page.mouse.up()
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        pytest.fail(f"エラー: データファイルが見つかりません: {json_path}")
+    return data
 
 
-def test_drawing_with_ai_verification(drawing_page: Page, ai_vision_verifier):
-    """
-    テストシナリオ: 描画 -> 確定 -> スクリーンショット -> AI検証 -> 採点。
-    """
-    page = drawing_page
+class TestKaigaraPre:
+    def test_all_drawings(self, quiz_session: Page, quiz_data: dict):
+        """
+        テストシナリオ: すべての描画タスクをテストする。
+        """
+        page = quiz_session
+        drawing_data_list = quiz_data.get("DRAWING_QUESTIONS", [])
+        if not drawing_data_list:
+            pytest.fail("データファイルに 'DRAWING_QUESTIONS' が見つかりません。")
 
-    # 1. 描画
-    draw_kawa(page)
+        total_drawing_questions = len(drawing_data_list)
 
-    # 2. 「決定」をクリックして描画を確定
-    with allure.step("「決定」をクリックして描画を確定"):
-        page.locator("div").filter(has_text=re.compile(r"^決けっ定てい$")).nth(2).click()
-        page.wait_for_timeout(1000)
+        with allure.step(f"パート 1: 描画問題 {total_drawing_questions} 問を実行"):
+            for i, question_data in enumerate(drawing_data_list):
+                word = question_data.get("word")
+                with allure.step(f"描画問題 {i + 1}/{total_drawing_questions}: 「{word}」"):
+                    draw_character(page, question_data)
+                    confirm_score_and_proceed(page)
 
-    # # 3. 結果のキャンバスをキャプチャ
-    # screenshot_path = ""
-    # with allure.step("AI検証のために結果をスクリーンショット"):
-    #     result_box = page.locator(".upper-canvas").first
-    #     folder_name = "ai_screenshots"
-    #     os.makedirs(folder_name, exist_ok=True)
-    #     screenshot_path = os.path.join(folder_name, "drawing_to_verify.png")
-    #     result_box.screenshot(path=screenshot_path)
-    #     allure.attach.file(screenshot_path, name="Drawing Result", attachment_type=allure.attachment_type.PNG)
-    #     print(f"-> 結果のスクリーンショットを保存しました: {screenshot_path}")
+        print(f"描画問題 {total_drawing_questions} 問を完了しました。パート 2 へ進みます...")
 
-    # # 4. 画像をAIに送信して検証
-    # with allure.step("画像をAIに送信し、文字が「かわ」であることを検証"):
-    #     is_correct = ai_vision_verifier(screenshot_path=screenshot_path, expected_char="かわ")
-    #     assert is_correct, "AIは文字「かわ」を正しく認識できませんでした。"
-    #     print("-> AIが描画の正確性を確認しました！")
+        choice_questions = quiz_data.get("CHOICE_QUESTIONS", [])
+        if not choice_questions:
+            pytest.fail("データファイルに 'CHOICE_QUESTIONS' が見つかりません。")
 
-    # 5. 「こたえあわせ」をクリックして採点
-    with allure.step("「こたえあわせ」をクリックして採点"):
-        kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
-        expect(kotaeawase_button).to_be_enabled(timeout=5000)
-        kotaeawase_button.click()
+        total_choice_questions = len(choice_questions)
 
-    # 6. 正解アイコンの表示を確認
-    with allure.step("正解アイコン (まる) の表示を確認"):
-        expect(page.locator(".icon__answer--right")).to_be_visible()
-        print("\n--- テスト完了 ---")
+        with allure.step(f"パート 2: 選択式問題 {total_choice_questions} 問を実行"):
+            for index, question in enumerate(choice_questions):
+                # 質問IDとタイプを表示
+                with allure.step(f"選択式問題 {question['id']} (タイプ: {question.get('type')})"):
+
+                    # 1. 質問に回答 (Helperを使用)
+                    # ドラッグアンドドロップの場合は 'correct_drag_mapping' を使用、それ以外は 'correct_answers' を使用
+                    answer_key = "correct_drag_mapping" if question.get("type") == "drag_drop" else "correct_answers"
+                    answer_question(page, question, answer_key)
+
+                    # 2. 'こたえあわせ' ボタンをクリック
+                    kotaeawase_button = page.get_by_role("button", name="こたえあわせ")
+                    expect(kotaeawase_button).to_be_enabled(timeout=10000)
+                    kotaeawase_button.click()
+
+                    # 3. 結果の確認 (正解アイコンが表示されることを確認)
+                    expect(page.locator(".icon__answer--right")).to_be_visible(timeout=10000)
+
+                    # 4. 最終問題/中間問題の処理
+                    is_last_question = (index == total_choice_questions - 1)
+                    if is_last_question:
+                        # これがテスト全体の最終問題の場合
+                        with allure.step("テスト全体の最終問題の処理"):
+                            complete_question(page)  # 終了処理関数を呼び出す
+                    else:
+                        # まだ問題が残っている場合、'つぎへ' をクリック
+                        with allure.step("'つぎへ' をクリックして次の問題へ"):
+                            next_button = page.get_by_role("button", name="つぎへ")
+                            expect(next_button).to_be_enabled(timeout=10000)
+                            next_button.click()
+                            # 新しいページの読み込みを待機 (重要)
+                            page.wait_for_load_state("networkidle", timeout=10000)
+
+        with allure.step("すべての質問を完了"):
+            print("テスト全体を完了しました。")

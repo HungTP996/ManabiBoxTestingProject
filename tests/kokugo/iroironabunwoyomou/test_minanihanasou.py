@@ -17,7 +17,7 @@ class TestMinanihanasou:
 
     def test_all_questions_correct(self, quiz_session: Page, kokugo_test_data: dict):
         page = quiz_session
-        questions = kokugo_test_data["minanihanasou"]
+        questions = kokugo_test_data["MINANIHANASOU"]
         total_questions = len(questions)
 
         with allure.step("シナリオ1：すべての問題に正しく解答する"):

@@ -1056,7 +1056,7 @@
       "expected_message": "おかあさんたちと　はなれて　しまったから。"
     }
   ],
-  "minanihanasou": [
+  "MINANIHANASOU": [
     {
       "id": 1,
       "type": "fill_blank",
