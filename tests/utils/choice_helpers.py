@@ -1,19 +1,12 @@
 from playwright.sync_api import Page, expect
-"""
-File này chứa các hàm trợ giúp có thể tái sử dụng để xử lý
-các loại câu hỏi khác nhau trong bài quiz.
-"""
+
+
 def answer_question(page: Page, question: dict, answer_key: str):
     """
-    Hàm tổng hợp, tự động gọi đến hàm xử lý tương ứng
-    dựa trên "type" của câu hỏi trong file dữ liệu.
-
-    :param page: Đối tượng Page của Playwright.
-    :param question: Dictionary chứa dữ liệu của câu hỏi hiện tại.
-    :param answer_key: Chuỗi cho biết nên dùng dữ liệu nào ('correct_answers' hoặc 'incorrect_answers').
+    質問タイプに応じて適切な回答関数を呼び出す。
     """
-    question_type = question.get("type", "text")  # Mặc định là 'text'
-    print(f"--> Đang thực hiện câu hỏi {question['id']} (Loại: {question_type})")
+    question_type = question.get("type", "text")
+    print(f"--> 質問 {question['id']} を実行中 (タイプ: {question_type})")
 
     if question_type in ["text", "image", "css", "xpath"]:
         _answer_simple_choice(page, question, answer_key)
@@ -26,48 +19,100 @@ def answer_question(page: Page, question: dict, answer_key: str):
 
 
 def _answer_simple_choice(page: Page, question: dict, answer_key: str):
-    """
-    Hàm này xử lý các câu hỏi trắc nghiệm đơn giản (text, hình ảnh, css).
-    Nó có thể xử lý việc chọn một hoặc nhiều đáp án.
-    """
     answers = question[answer_key]
     question_type = question.get("type", "text")
-
     for answer_locator in answers:
         if question_type == "text":
-            page.get_by_text(answer_locator, exact=True).click()
+            page.get_by_text(answer_locator, exact=True).first.click()
         else:
-            page.locator(answer_locator).click()
+            page.locator(answer_locator).first.click()
 
 
 def _answer_fill_blank(page: Page, question: dict, answer_key: str):
-    """Hàm này xử lý các câu hỏi dạng điền vào chỗ trống."""
+    """
+    空欄補充形式の質問に回答する。
+    """
     actions = question[answer_key]
     for action in actions:
         page.locator(action["blank_locator"]).click()
         page.get_by_text(action["choice_text"], exact=True).click()
 
-
 def _answer_drag_drop(page: Page, question: dict, answer_key: str):
+    """
+    ドラッグアンドドロップ形式の質問に回答する（マウス操作シミュレーション）。
+    """
     mappings = question[answer_key]
 
     for drag_action in mappings:
-        # Lấy thông tin của item cần kéo
-        item_data = question["items_to_drag"][drag_action["item"]]
-        item_text = item_data["text"]
-        item_index = item_data.get("index", 0)
-
-        # Tìm item cần kéo bằng cả text và index
+        # 1. ドラッグするアイテムの取得
+        item_key = drag_action["item"]
+        item_data = question["items_to_drag"][item_key]
+        
+        if isinstance(item_data, dict):
+            item_text = item_data["text"]
+            item_index = item_data.get("index", 0)
+        else:
+            item_text = item_data
+            item_index = 0
+            
         item_to_drag = page.get_by_text(item_text).nth(item_index)
 
-        # Lấy thông tin của vùng cần thả
-        zone_selector = question["drop_zones"][drag_action["zone"]]
+        # 2. ドロップゾーンの取得（辞書型と文字列型の両方に対応）
+        zone_name = drag_action["zone"]
+        zone_data = question["drop_zones"][zone_name]
 
-        # Xác định đúng zone (1 hay 2) dựa trên locator
-        if drag_action["zone"] == "zone1":
-            drop_zone = page.locator(zone_selector).nth(0)
+        if isinstance(zone_data, dict):
+            zone_selector = zone_data["locator"]
+            zone_index = zone_data.get("index", 0)
         else:
-            drop_zone = page.locator(zone_selector).nth(1)
-        # Thực hiện hành động kéo thả
-        item_to_drag.drag_to(drop_zone)
-        # expect(drop_zone).to_contain_text(item_text)
+            zone_selector = zone_data
+            zone_index = 0
+        
+        drop_zone = page.locator(zone_selector).nth(zone_index)
+
+        print(f"    -> '{item_text}' (index {item_index}) のドラッグを準備中...") 
+
+        try:
+            expect(item_to_drag).to_be_visible(timeout=5000)
+            expect(drop_zone).to_be_visible(timeout=5000)
+
+            print(f"    -> '{item_text}' をゾーン '{zone_name}' へドラッグ中...")
+
+            # バウンディングボックスの取得
+            item_bb = item_to_drag.bounding_box()
+            zone_bb = drop_zone.bounding_box()
+
+            if not item_bb or not zone_bb:
+                raise Exception(f"アイテムまたはゾーンのバウンディングボックスが見つかりませんでした。")
+
+            # 3. マウス操作によるドラッグ＆ドロップ実行
+            
+            # アイテムの中心へ移動
+            page.mouse.move(
+                item_bb['x'] + item_bb['width'] / 2,
+                item_bb['y'] + item_bb['height'] / 2
+            )
+            
+            # つかむ
+            page.mouse.down()
+            page.wait_for_timeout(200)
+
+            # ゾーンの中心へ移動（steps=5 で滑らかに移動）
+            page.mouse.move(
+                zone_bb['x'] + zone_bb['width'] / 2,
+                zone_bb['y'] + zone_bb['height'] / 2,
+                steps=5 
+            )
+            page.wait_for_timeout(300)
+
+            # 放す
+            page.mouse.up()
+            page.wait_for_timeout(300)
+
+            print(f"    -> '{item_text}' をドロップしました。") 
+
+        except Exception as e:
+            print(f"    エラー: '{item_text}' のドラッグに失敗しました: {e}")
+            # エラー時のスクリーンショット保存
+            page.screenshot(path=f"screenshots/DEBUG_drag_ERROR_{item_text}.png")
+            raise e

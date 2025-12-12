@@ -1,312 +1,435 @@
 {
   "AMEDESUYO": [
     {
-      "id": 1, "type": "text",
-      "correct_answers": ["ぶた"],
-      "incorrect_answers": ["ぶだ", "ぷた"]
+      "id": 1,
+      "type": "xpath",
+      "correct_answers": ["//*[@id='1047308']"],
+      "incorrect_answers": ["//*[@id='1047310']", "//*[@id='1047309']"]
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["えんぴつ"],
       "incorrect_answers": ["えんひつ", "えんびつ"]
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["ひつじ"],
       "incorrect_answers": ["ひづじ", "ひづし"]
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["はなび"],
       "incorrect_answers": ["はなひ", "はなぴ"]
     },
     {
-      "id": 5, "type": "css",
-      "correct_answers": ["[id='1047320'] img"],
-      "incorrect_answers": ["[id='1047322'] img", "[id='1047321'] img"]
+      "id": 5,
+      "type": "xpath",
+      "correct_answers": ["//*[@id='1047320']"],
+      "incorrect_answers": ["//*[@id='1047322']", "//*[@id='1047321']"]
     }
   ],
   "TONKOTOTON": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["およぐ"],
       "incorrect_answers": ["はねる", "たべる"]
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["ねる"],
       "incorrect_answers": ["はしる", "たべる"]
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["わらう"],
       "incorrect_answers": ["おこる", "あるく"]
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["あめが　ふる。", "あじさいが　さく。"],
       "incorrect_answers": ["かさが　こわれる。", "かえるが　ねる。"]
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["とりが　おどろく。", "とりが　わらう。"],
       "incorrect_answers": ["とりが　たべる。", "とりが　およぐ。"]
     }
   ],
   "HAWOTSUKAOU": [
     {
-      "id": 1, "type": "xpath",
+      "id": 1,
+      "type": "xpath",
       "correct_answers": ["//*[@id='1047340']"],
       "incorrect_answers": ["//*[@id='1047341']"]
     },
     {
-      "id": 2, "type": "xpath",
-      "correct_answers":["//*[@id='1047342']"],
+      "id": 2,
+      "type": "xpath",
+      "correct_answers": ["//*[@id='1047342']"],
       "incorrect_answers": ["//*[@id='1047343']"]
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["わに"],
       "incorrect_answers": ["はに"]
     },
     {
-      "id": 4, "type": "fill_blank",
-      "choices": {"わ": "わ", "は": "は"},
+      "id": 4,
+      "type": "fill_blank",
+      "choices": { "わ": "わ", "は": "は" },
       "correct_answers": [
-        {"blank_locator": "[data-id='question-0']", "choice_text": "わ"},
-        {"blank_locator": "[data-id='question-1']", "choice_text": "は"}
+        { "blank_locator": "[data-id='question-0']", "choice_text": "わ" },
+        { "blank_locator": "[data-id='question-1']", "choice_text": "は" }
       ],
       "incorrect_answers": [
-        {"blank_locator": "[data-id='question-0']", "choice_text": "は"},
-        {"blank_locator": "[data-id='question-1']", "choice_text": "わ"}
+        { "blank_locator": "[data-id='question-0']", "choice_text": "は" },
+        { "blank_locator": "[data-id='question-1']", "choice_text": "わ" }
       ]
     },
     {
-      "id": 5, "type": "drag_drop",
+      "id": 5,
+      "type": "drag_drop",
       "items_to_drag": {
-      "item1": { "text": "にわとりは　とばない。", "index": 0 },
-      "item2": { "text": "ねずみは　ちいさい。", "index": 0 },
-      "item3": { "text": "はみがきは　だいじだ。", "index": 0 },
-      "item4": { "text": "わには　およぐ。", "index": 0 }
-},
+        "item1": { "text": "にわとりは　とばない。", "index": 0 },
+        "item2": { "text": "ねずみわ　ちいさい。", "index": 0 },
+        "item3": { "text": "はみがきは　だいじだ。", "index": 0 },
+        "item4": { "text": "わにわ　およぐ。", "index": 0 }
+      },
       "drop_zones": {
-        "zone1": ".h-112px",
-        "zone2": ".h-112px"
+        "zone1": { "locator": ".h-112px", "index": 0 },
+        "zone2": { "locator": ".h-112px", "index": 1 }
       },
       "correct_drag_mapping": [
-        {"item": "item1", "zone": "zone1"},
-        {"item": "item2", "zone": "zone2"},
-        {"item": "item3", "zone": "zone1"},
-        {"item": "item4", "zone": "zone2"}
+        { "item": "item1", "zone": "zone1" },
+        { "item": "item3", "zone": "zone1" },
+        { "item": "item2", "zone": "zone2" },
+        { "item": "item4", "zone": "zone2" }
       ],
       "incorrect_drag_mapping": [
-        {"item": "item2", "zone": "zone1"},
-        {"item": "item1", "zone": "zone2"},
-        {"item": "item3", "zone": "zone1"},
-        {"item": "item4", "zone": "zone2"}
+        { "item": "item2", "zone": "zone1" },
+        { "item": "item1", "zone": "zone2" },
+        { "item": "item3", "zone": "zone1" },
+        { "item": "item4", "zone": "zone2" }
       ]
     }
   ],
   "WOHEWO_TSUKAOU": [
     {
       "id": 1,
-      "correct_answer": "を",
-      "incorrect_answer": "お",
+      "type": "text",
+      "correct_answers": "を",
+      "incorrect_answers": "お",
       "expected_message": "ことばを　つなぐ　ときは、「を」を　つかうね。"
     },
     {
       "id": 2,
-      "correct_answer": "へ",
-      "incorrect_answer": "え",
+      "type": "text",
+      "correct_answers": "へ",
+      "incorrect_answers": "え",
       "expected_message": "ことばを　つなぐ　ときは、「へ」と　かくよ。"
     },
     {
       "id": 3,
-      "correct_answer": "を",
-      "incorrect_answer": "へ",
+      "type": "text",
+      "correct_answers": "を",
+      "incorrect_answers": "へ",
       "expected_message": "「を」と　「へ」を　ただしく　つかいわけよう。"
     },
     {
       "id": 4,
-      "correct_answer": "へ",
-      "incorrect_answer": "を",
+      "type": "text",
+      "correct_answers": "へ",
+      "incorrect_answers": "を",
       "expected_message": "「を」と　「へ」を　ただしく　つかいわけよう。"
     },
     {
       "id": 5,
-      "correct_answer": "わたしは　いちごを　たべます。",
-      "incorrect_answer": "わたしは　ゆうえんちえ　いきます。",
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047360']"],
+      "incorrect_answers": ["xpath=//*[@id='1047361']"],
       "expected_message": "「を」「へ」に　きを　つけて　よもう。"
     }
   ],
   "SATOUTOSHIO": [
-    { "id": 1, "correct_answer": "を", "incorrect_answer": "お" },
-    { "id": 2, "correct_answer": "へ", "incorrect_answer": "え" },
-    { "id": 3, "correct_answers": ["は", "へ"], "expected_messages": ["は", "へ"] },
-    { "id": 4, "correct_answers": ["は", "へ"], "expected_messages": ["は", "へ"] },
-    { "id": 5, "correct_answer": "。", "incorrect_answer": "、" }
+    { "id": 1, "correct_answers": "を", "incorrect_answers": "お" },
+    { "id": 2, "correct_answers": "へ", "incorrect_answers": "え" },
+    {
+      "id": 3,
+      "correct_answers": ["は", "へ"],
+      "expected_messages": ["は", "へ"]
+    },
+    {
+      "id": 4,
+      "correct_answers": ["は", "へ"],
+      "expected_messages": ["は", "へ"]
+    },
+    { "id": 5, "correct_answers": "。", "incorrect_answers": "、" }
   ],
   "NEKOTONEKKO": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["はらっぱ"],
       "incorrect_answers": ["はらつぱ", "はっらぱ"],
       "expected_message": "「は」と　「ぱ」の　ちがいにも　きを　つけよう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["もっきん"],
       "incorrect_answers": ["もきっん", "もつきん"],
       "expected_message": "「っ」が　どこに　はいるか　たしかめよう。"
     },
     {
-      "id": 3, "type": "image",
+      "id": 3,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047370']"],
       "incorrect_answers": ["xpath=//*[@id='1047371']"]
     },
     {
-      "id": 4, "type": "text",
-      "correct_answers": ["ねっこ"],
-      "incorrect_answers": ["ねこ"],
-      "expected_message":"「ねこ」と　「ねっこ」では、いみが　かわるね。"
+      "id": 4,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047372']"],
+      "incorrect_answers": ["xpath=//*[@id='1047373']"],
+      "expected_message": "「ねこ」と　「ねっこ」では、いみが　かわるね。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["きって"],
       "incorrect_answers": ["きつて"],
-      "expected_message":"ちいさい　「っ」の　かきかたに　きを　つけよう。"
+      "expected_message": "ちいさい　「っ」の　かきかたに　きを　つけよう。"
     }
   ],
   "NOBASUON": [
     {
-      "id": 1, "type": "text",
-      "correct_answers": ["お"],
-      "incorrect_answers": ["う"],
+      "id": 1,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047376']"],
+      "incorrect_answers": ["xpath=//*[@id='1047377']"],
       "expected_message": "「お」の　のばす　おんは、「う」「お」の　どちらを　かくか、きを　つけよう。"
     },
     {
-      "id": 2, "type": "text",
-      "correct_answers": ["あ"],
-      "incorrect_answers": ["う"],
+      "id": 2,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047379']"],
+      "incorrect_answers": ["xpath=//*[@id='1047378']"],
       "expected_message": "「か」を　ながく　のばすと、「あ」の　おとに　なるね。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047380']"],
+      "incorrect_answers": ["xpath=//*[@id='1047381']"],
+      "expected_message": "「ね」を　ながく　のばすと、「え」の　おとに　なるね。"
+    },
+    {
+      "id": 4,
+      "type": "text",
+      "correct_answers": ["せんせい"],
+      "incorrect_answers": ["せんせえ"],
+      "expected_message": "」だけど、かく　ときは　「せんせ"
+    },
+    {
+      "id": 5,
+      "type": "text",
+      "correct_answers": ["ぼうし"],
+      "incorrect_answers": ["ぼおし"],
+      "expected_message": "」だけど、かく　ときは　「せんせ"
+    }
+  ],
+  "DOUYATTEPRE": [
+    {
+      "id": 1,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047626']"],
+      "incorrect_answers": ["xpath=//*[@id='1047627']"],
+      "expected_message": "あ"
+    },
+    {
+      "id": 2,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047628']"],
+      "incorrect_answers": ["xpath=//*[@id='1047629']"],
+      "expected_message": "う"
+    },
+    {
+      "id": 3,
+      "type": "text",
       "correct_answers": ["え"],
       "incorrect_answers": ["い"],
       "expected_message": "「ね」を　ながく　のばすと、「え」の　おとに　なるね。"
     },
     {
-      "id": 4, "type": "text",
-      "correct_answers": ["せんせい"],
-      "incorrect_answers": ["せんせえ"],
-      "expected_message":"」だけど、かく　ときは　「せんせ"
+      "id": 4,
+      "type": "text",
+      "correct_answers": ["きって"],
+      "incorrect_answers": ["きつて"],
+      "expected_message": "きって"
     },
     {
-      "id": 5, "type": "text",
-      "correct_answers": ["ぼうし"],
-      "incorrect_answers": ["ぼおし"],
-      "expected_message":"」だけど、かく　ときは　「せんせ"
+      "id": 5,
+      "type": "text",
+      "correct_answers": ["ねっこ"],
+      "incorrect_answers": ["ねこ"],
+      "expected_message": "ねっこ"
     }
   ],
-  "DOUYATTEPRE": [
+  "ISHIYATOISHA": [
     {
-        "id": 1, "type": "text",
-        "correct_answers": ["あ"],
-        "incorrect_answers": ["い"],
-        "expected_message": "あ"
-    },
-    {
-        "id": 2, "type": "text",
-        "correct_answers": ["う"],
-        "incorrect_answers": ["お"],
-        "expected_message": "う"
-    },
-    {
-        "id": 3, "type": "text",
-        "correct_answers": ["え"],
-        "incorrect_answers": ["い"],
-        "expected_message": "「ね」を　ながく　のばすと、「え」の　おとに　なるね。"
-    },
-    {
-        "id": 4, "type": "text",
-        "correct_answers": ["きって"],
-        "incorrect_answers": ["きつて"],
-        "expected_message":"きって"
-    },
-    {
-        "id": 5, "type": "text",
-        "correct_answers": ["ねっこ"],
-        "incorrect_answers": ["ねこ"],
-        "expected_message":"ねっこ"
-    }
-  ],
-  "OOKINAKABU": [
-    {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["しゃ"],
       "incorrect_answers": ["しや"],
       "expected_message": "つづけて　よんで　みて、こたえを　たしかめよう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["あくしゅ"],
       "incorrect_answers": ["あくしゆ"],
       "expected_message": "ちいさく　かく　字に　きを　つけよう。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["はっぴょう"],
       "incorrect_answers": ["はつぴよう"],
       "expected_message": "「つ」と　「よ」を、どちらも　ちいさく　かくよ。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["しょっき"],
       "incorrect_answers": ["しよつき"],
-      "expected_message":"「よ」と　「つ」を、どちらも　ちいさく　かくよ。"
+      "expected_message": "「よ」と　「つ」を、どちらも　ちいさく　かくよ。"
     },
     {
-      "id": 5, "type": "image",
+      "id": 5,
+      "type": "image",
       "correct_answers": ["xpath=//*[@id='1047394']"],
-      "incorrect_answers": ["xpath=//*[@id='1047395']","xpath=//*[@id='1047396']"],
-      "expected_message":"「よ」と　「ゆ」を、どちらも　ちいさく　かくよ。"
+      "incorrect_answers": [
+        "xpath=//*[@id='1047395']",
+        "xpath=//*[@id='1047396']"
+      ],
+      "expected_message": "「よ」と　「ゆ」を、どちらも　ちいさく　かくよ。"
     }
   ],
   "OOKINAKABUPRE": [
-    { "id": 1, "type": "text", "correct_answers": ["しゃしん"], "incorrect_answers": ["しやしん"], "expected_message": "しゃしん" },
-    { "id": 2, "type": "text", "correct_answers": ["びょういん"], "incorrect_answers": ["びよういん"], "expected_message": "びょういん" },
-    { "id": 3, "type": "text", "correct_answers": ["いしゃ"], "incorrect_answers": ["いしや"], "expected_message": "いしゃ" },
-    { "id": 4, "type": "image", "correct_answers": ["xpath=//*[@id='1047642']"], "incorrect_answers": ["xpath=//*[@id='1047643']"], "expected_message": "" },
-    { "id": 5, "type": "image", "correct_answers": ["xpath=//*[@id='1047644']"], "incorrect_answers": ["xpath=//*[@id='1047645']"], "expected_message": "" }
+    {
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["しゃしん"],
+      "incorrect_answers": ["しやしん"],
+      "expected_message": "しゃしん"
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "correct_answers": ["びょういん"],
+      "incorrect_answers": ["びよういん"],
+      "expected_message": "びょういん"
+    },
+    {
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["いしゃ"],
+      "incorrect_answers": ["いしや"],
+      "expected_message": "いしゃ"
+    },
+    {
+      "id": 4,
+      "type": "image",
+      "correct_answers": ["xpath=//*[@id='1047642']"],
+      "incorrect_answers": ["xpath=//*[@id='1047643']"],
+      "expected_message": ""
+    },
+    {
+      "id": 5,
+      "type": "image",
+      "correct_answers": ["xpath=//*[@id='1047644']"],
+      "incorrect_answers": ["xpath=//*[@id='1047645']"],
+      "expected_message": ""
+    }
+  ],
+  "OOKINAKABU": [
+    {
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["しゃ"],
+      "incorrect_answers": ["しや"],
+      "expected_message": ""
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "correct_answers": ["あくしゅ"],
+      "incorrect_answers": ["あくしゆ"],
+      "expected_message": "ちいさく　かく　字に　きを　つけよう。"
+    },
+    {
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["はっぴょう"],
+      "incorrect_answers": ["はつぴよう"],
+      "expected_message": "「つ」と　「よ」を、どちらも　ちいさく　かくよ。"
+    },
+    {
+      "id": 4,
+      "type": "text",
+      "correct_answers": ["しょっき"],
+      "incorrect_answers": ["しよつき"],
+      "expected_message": "「よ」と　「つ」を、どちらも　ちいさく　かくよ。"
+    },
+    {
+      "id": 5,
+      "type": "image",
+      "correct_answers": ["xpath=//*[@id='1047394']"],
+      "incorrect_answers": ["xpath=//*[@id='1047395']"],
+      "expected_message": "「よ」と　「ゆ」を、どちらも　ちいさく　かくよ。"
+    }
   ],
   "KATAKANAWOMITSUKEYOU": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["くれよん"],
       "incorrect_answers": ["えんぴつ", "じょうぎ"],
       "expected_message": "かたかなで　かく　ことばと　ひらがなで　かく　ことばが　あるよ。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["ぼうる"],
       "incorrect_answers": ["くつ", "つち"],
       "expected_message": "みの　まわりから　かたかなで　かく　ことばを　さがそう。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["クレヨン"],
       "incorrect_answers": ["クレヨル"],
       "expected_message": "おぼえた　かたかなは　かけるように　しよう。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["ボール"],
       "incorrect_answers": ["ボル", "ボンル", "ホール"],
       "expected_message": "かたかなでは、のばす　おんは　「ー」を　かくよ。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["ルール"],
       "incorrect_answers": ["ルンル", "ルル"],
       "expected_message": "かたかなでは、のばす　おんは　「ー」を　かくよ。"
@@ -314,31 +437,36 @@
   ],
   "KAZOEUTA": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["びき"],
       "incorrect_answers": ["ひき", "ぴき"],
       "expected_message": "き」と　おとが　かわるよ。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["さつ"],
       "incorrect_answers": ["にん", "だい"],
       "expected_message": "ほんを　かぞえる　ときは、「さつ」を　つかうよ。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["まい"],
       "incorrect_answers": ["ぴき", "さつ"],
       "expected_message": "かみを　かぞえる　ときは、「まい」を　つかうよ。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["ぽん"],
       "incorrect_answers": ["さつ", "にん"],
       "expected_message": "ん」と　おとが　かわるよ。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["さらが　四まい。"],
       "incorrect_answers": ["えんぴつが　四まい。", "くるまが　四まい。"],
       "expected_message": "「まい」は、うすくて　ひらたい　ものを　かぞえる　ときに　つかうよ。"
@@ -346,424 +474,627 @@
   ],
   "KANJINOHANASHI": [
     {
-        "id": 1, "type": "text",
-        "correct_answers": ["日"],
-        "incorrect_answers":  ["月"],
-        "expected_message": "日と　月は　かたちが　にて　いるので、　気を　つけよう。"
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["日"],
+      "incorrect_answers": ["月"],
+      "expected_message": "日と　月は　かたちが　にて　いるので、　気を　つけよう。"
     },
     {
-        "id": 2, "type": "text",
-        "correct_answers": ["山"],
-        "incorrect_answers":  ["上"],
-        "expected_message": "山と　いう　かんじは　山の　かたちから　できたよ。"
+      "id": 2,
+      "type": "text",
+      "correct_answers": ["山"],
+      "incorrect_answers": ["上"],
+      "expected_message": "山と　いう　かんじは　山の　かたちから　できたよ。"
     },
     {
-        "id": 3, "type": "text",
-        "correct_answers": ["川"],
-        "incorrect_answers": ["三"],
-        "expected_message": "川と　いう　かんじは　川の　ながれる　ようすから　できたよ。"
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["川"],
+      "incorrect_answers": ["三"],
+      "expected_message": "川と　いう　かんじは　川の　ながれる　ようすから　できたよ。"
     },
     {
-        "id": 4, "type": "text",
-        "correct_answers": ["下"],
-        "incorrect_answers": ["上", "一"],
-        "expected_message": "下と　いう　かんじは、下に　ものが　ある　ことを　しめす　しるしから　できたよ。"
+      "id": 4,
+      "type": "text",
+      "correct_answers": ["下"],
+      "incorrect_answers": ["上", "一"],
+      "expected_message": "下と　いう　かんじは、下に　ものが　ある　ことを　しめす　しるしから　できたよ。"
     },
     {
-        "id": 5, "type": "drag_drop",
-        "items_to_drag": {
-          "item1": { "text": "下", "index": 1 },
-          "item2": { "text": "木", "index": 0 },
-          "item3": { "text": "月", "index": 0 },
-          "item4": { "text": "上", "index": 0 }
-    },
-        "drop_zones": { "zone1": ".h-112px", "zone2": ".h-112px" },
-        "correct_drag_mapping": [
-            {"item": "item1", "zone": "zone2"}, {"item": "item2", "zone": "zone1"},
-            {"item": "item3", "zone": "zone1"}, {"item": "item4", "zone": "zone2"}
-        ],
-        "incorrect_drag_mapping": [
-            {"item": "item1", "zone": "zone1"}, {"item": "item2", "zone": "zone2"},
-            {"item": "item3", "zone": "zone2"}, {"item": "item4", "zone": "zone1"}
-        ]
+      "id": 5,
+      "type": "drag_drop",
+      "items_to_drag": {
+        "item1": { "text": "下", "index": 1 },
+        "item2": { "text": "木", "index": 0 },
+        "item3": { "text": "月", "index": 0 },
+        "item4": { "text": "上", "index": 0 }
+      },
+      "drop_zones": {
+        "zone1": { "locator": ".h-112px", "index": 0 },
+        "zone2": { "locator": ".h-112px", "index": 1 }
+      },
+      "correct_drag_mapping": [
+        { "item": "item1", "zone": "zone2" },
+        { "item": "item2", "zone": "zone1" },
+        { "item": "item3", "zone": "zone1" },
+        { "item": "item4", "zone": "zone2" }
+      ],
+      "incorrect_drag_mapping": [
+        { "item": "item1", "zone": "zone1" },
+        { "item": "item2", "zone": "zone2" },
+        { "item": "item3", "zone": "zone2" },
+        { "item": "item4", "zone": "zone1" }
+      ]
     }
   ],
-   "SADADADEGENKI": [
+  "SADADADEGENKI": [
     {
-      "id": 1, "type": "xpath",
+      "id": 1,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047448']"],
-      "incorrect_answers": ["xpath=//*[@id='1047446']", "xpath=//*[@id='1047447']","xpath=//*[@id='1047449']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047446']",
+        "xpath=//*[@id='1047447']",
+        "xpath=//*[@id='1047449']"
+      ],
       "expected_message": "き」と　おとが　かわるよ。"
     },
     {
-      "id": 2, "type": "xpath",
+      "id": 2,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047451']"],
       "incorrect_answers": ["xpath=//*[@id='1047450']"],
       "expected_message": "はじめに　ひだりの　はらいを　かくよ。"
     },
     {
-      "id": 3, "type": "xpath",
+      "id": 3,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047453']"],
       "incorrect_answers": ["xpath=//*[@id='1047452']"],
       "expected_message": "てんを　かく　ばしょに　気を　つけよう。"
     },
     {
-      "id": 4, "type": "xpath",
+      "id": 4,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047454']"],
-      "incorrect_answers":["xpath=//*[@id='1047455']"],
+      "incorrect_answers": ["xpath=//*[@id='1047455']"],
       "expected_message": "はじめに　よこぼうを　かくよ。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["4かいめ"],
-      "incorrect_answers": ["2かいめ","3かいめ","5かいめ"],
+      "incorrect_answers": ["2かいめ", "3かいめ", "5かいめ"],
       "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     }
   ],
-   "KATAKANAWOKAKOU": [
+  "KATAKANAWOKAKOU": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["ノート"],
       "incorrect_answers": ["ノオト", "ノウト"],
       "expected_message": "かたかなでは、のばす　おんは　「ー」を　かくよ。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["マフラー"],
-      "incorrect_answers":["マラフー", "マフラア", "アフラー"],
+      "incorrect_answers": ["マラフー", "マフラア", "アフラー"],
       "expected_message": "かたちが　にて　いる　じに　きを　つけよう。のばす　おんは　「ー」を　かくよ。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["ダッシュ"],
       "incorrect_answers": ["ダッツュ", "ダツシユ"],
       "expected_message": "「ツ」と　「シ」は、てんの　むきの　ちがいに　きを　つけよう。"
     },
     {
-      "id": 4, "type": "xpath",
+      "id": 4,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047470']"],
-      "incorrect_answers":["xpath=//*[@id='1047471']","xpath=//*[@id='1047472']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047471']",
+        "xpath=//*[@id='1047472']"
+      ],
       "expected_message": "「゛」や　「゜」の　つく　じに　きを　つけよう。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["チューリップ"],
-      "incorrect_answers": ["チユーリップ","チューリツプ"],
+      "incorrect_answers": ["チユーリップ", "チューリツプ"],
       "expected_message": "さく　かく　「ュ」と　「ッ」に　気を　つけよう。"
     }
   ],
-   "YOUHITOHIDUKE": [
+  "YOUHITOHIDUKE": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["一日"],
       "incorrect_answers": ["三日", "二日"],
       "expected_message": "「二日」は　「ふつか」、「三日」は　「みっか」と　よむよ。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["五日"],
-      "incorrect_answers":["七日", "六日"],
+      "incorrect_answers": ["七日", "六日"],
       "expected_message": "「六日」は　「むいか」、「七日」は　「なのか」と　よむよ。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["ようか"],
       "incorrect_answers": ["はつか", "よっか"],
       "expected_message": "「よっか」は　「四日」、「はつか」は　「二十日」と　かくよ。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["はつか"],
-      "incorrect_answers":["ようか","みっか","ついたち"],
+      "incorrect_answers": ["ようか", "みっか", "ついたち"],
       "expected_message": "「ついたち」は　「一日」、「みっか」は　「三日」、「ようか」は　「八日」だよ。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["六日"],
-      "incorrect_answers": ["八日","十日","二日"],
+      "incorrect_answers": ["八日", "十日", "二日"],
       "expected_message": "「十日」は　「とおか」と　よむよ。"
     }
   ],
   "IROIRONAFUNE": [
     {
-      "id": 1, "type": "xpath",
+      "id": 1,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047493']"],
       "incorrect_answers": ["xpath=//*[@id='1047494']"],
       "expected_message": "はじめに　ひだりの　はらいを　かくよ。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["休む"],
-      "incorrect_answers":["休すむ"],
+      "incorrect_answers": ["休すむ"],
       "expected_message": "ほかにも　「からだを　休やすめる。」と　いう　つかいかたも　あるね。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["6かいめ"],
-      "incorrect_answers": ["7かいめ", "4かいめ","5かいめ"],
+      "incorrect_answers": ["7かいめ", "4かいめ", "5かいめ"],
       "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     },
     {
-      "id": 4, "type": "xpath",
+      "id": 4,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047503']"],
-      "incorrect_answers": ["xpath=//*[@id='1047502']","xpath=//*[@id='1047501']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047502']",
+        "xpath=//*[@id='1047501']"
+      ],
       "expected_message": "「目」の　よこぼうの　かずと、下の　ぶぶんの　かたちに　気を　つけよう。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["5かい"],
-      "incorrect_answers": ["3かい","4かい","6かい"],
+      "incorrect_answers": ["3かい", "4かい", "6かい"],
       "expected_message": "中の　よこぼうは　2ほんだよ。"
     }
   ],
   "MATOMETEYOBUKOTOBA": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["ひまわり"],
-      "incorrect_answers": ["ねこ","すずめ"],
+      "incorrect_answers": ["ねこ", "すずめ"],
       "expected_message": "花の　なかまの　ことばを　えらぼう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["くだもの"],
-      "incorrect_answers":["さかな","のりもの"],
+      "incorrect_answers": ["さかな", "のりもの"],
       "expected_message": "「さかな」は、あじ・たい・さばなどを　まとめて　よぶ　ことばだね。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["さくらんぼ"],
-      "incorrect_answers": ["だいこん", "しお","あめ"],
+      "incorrect_answers": ["だいこん", "しお", "あめ"],
       "expected_message": "くだものの　なかまの　ことばを　えらぼう。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["のりもの"],
-      "incorrect_answers": ["くだもの","花"],
+      "incorrect_answers": ["くだもの", "花"],
       "expected_message": "「花」は、ばら・さくら・たんぽぽなどを　まとめて　よぶ　ことばだね。"
     },
     {
-      "id": 5, "type": "text",
-      "correct_answers": ["すず","ピアノ"],
-      "incorrect_answers": ["バナナ","ばら"],
+      "id": 5,
+      "type": "text",
+      "correct_answers": ["すず", "ピアノ"],
+      "incorrect_answers": ["バナナ", "ばら"],
       "expected_message": "「ばら」は　花の　なかま、「バナナ」は　くだものの　なかまだね。"
     }
   ],
-   "OTOUTONEZUMICHIRO": [
+  "OTOUTONEZUMICHIRO": [
     {
-      "id": 1, "type": "xpath",
+      "id": 1,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047526']"],
-      "incorrect_answers": ["xpath=//*[@id='1047527']","xpath=//*[@id='1047525']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047527']",
+        "xpath=//*[@id='1047525']"
+      ],
       "expected_message": "よこぼうの　かずや　かたちに　気を　つけよう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["赤い"],
-      "incorrect_answers":["赤かい"],
+      "incorrect_answers": ["赤かい"],
       "expected_message": "ほかにも　「かおを　赤あからめる。」と　いう　つかいかたも　あるね。"
     },
     {
-      "id": 3, "type": "xpath",
+      "id": 3,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047530']"],
-      "incorrect_answers": ["xpath=//*[@id='1047531']","xpath=//*[@id='1047532']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047531']",
+        "xpath=//*[@id='1047532']"
+      ],
       "expected_message": "よこぼうの　かずや　かたちに　気を　つけよう。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["6かい"],
-      "incorrect_answers": ["5かい","7かい","8かい"],
+      "incorrect_answers": ["5かい", "7かい", "8かい"],
       "expected_message": "「口」の　ぶぶんは　3かいで　かくよ。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["5かいめ"],
-      "incorrect_answers": ["3かいめ","4かいめ","6かいめ"],
+      "incorrect_answers": ["3かいめ", "4かいめ", "6かいめ"],
       "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     }
   ],
-     "MONOGATARIWOYOMOU": [
+  "MONOGATARIWOYOMOU01": [
     {
-      "id": 1, "type": "text",
-      "correct_answers": ["土の　中。"],
-      "incorrect_answers": ["土の　上。","川の　中。"],
-      "expected_message": "よこぼうの　かずや　かたちに　気を　つけよう。"
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["土つちの　中なか。"],
+      "incorrect_answers": ["土つちの　上うえ。", "川かわの　中なか。"],
+      "expected_message": "土つちの　中なか。"
     },
     {
-      "id": 2, "type": "text",
-      "correct_answers": ["赤い"],
-      "incorrect_answers":["赤かい"],
-      "expected_message": "ほかにも　「かおを　赤あからめる。」と　いう　つかいかたも　あるね。"
+      "id": 2,
+      "type": "text",
+      "correct_answers": [
+        "せなかの　上うえの　土つちが　あたたかく　なって　きたので。"
+      ],
+      "incorrect_answers": [
+        "せなかの　上うえの　土つちが　つめたく　なって　きたので。",
+        "おなかの　下したの　土つちが　あたたかく　なって　きたので。"
+      ],
+      "expected_message": "せなかの　上うえの　土つちが　あたたかく　なって　きたので。"
     },
     {
-      "id": 3, "type": "xpath",
-      "correct_answers": ["xpath=//*[@id='1047530']"],
-      "incorrect_answers": ["xpath=//*[@id='1047531']","xpath=//*[@id='1047532']"],
-      "expected_message": "よこぼうの　かずや　かたちに　気を　つけよう。"
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["きいろの　かえる。"],
+      "incorrect_answers": ["ちゃいろの　かえる。", "みどりの　かえる。"],
+      "expected_message": "きいろの　かえる。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["はる"],
-      "incorrect_answers": ["なつ","あき","ふゆ"],
+      "incorrect_answers": ["なつ", "あき", "ふゆ"],
       "expected_message": "はる"
     }
   ],
   "SUIMI": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["7かい"],
-      "incorrect_answers": ["5かい","6かい","8かい"],
+      "incorrect_answers": ["5かい", "6かい", "8かい"],
       "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["6かい"],
-      "incorrect_answers": ["5かい","7かい","8かい"],
+      "incorrect_answers": ["5かい", "7かい", "8かい"],
       "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     },
     {
-      "id": 3, "type": "xpath",
+      "id": 3,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047592']"],
       "incorrect_answers": ["xpath=//*[@id='1047593']"],
       "expected_message": "「木」を　よこに　二つ　ならべて　かこう。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047595']"],
       "incorrect_answers": ["xpath=//*[@id='1047594']"],
       "expected_message": "左から　右へ　かくよ。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["3かいめ"],
-      "incorrect_answers": ["5かいめ","4かいめ","6かいめ"],
+      "incorrect_answers": ["5かいめ", "4かいめ", "6かいめ"],
       "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     }
   ],
-   "KATACHI": [
+  "KATACHI": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["見"],
       "incorrect_answers": ["貝"],
       "expected_message": "「目」の　下の　ぶぶんの　かたちに　ちゅういしよう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["人"],
       "incorrect_answers": ["入"],
       "expected_message": "せんの　ながさや　むきに　ちゅういしよう。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["玉"],
       "incorrect_answers": ["王"],
       "expected_message": "「玉」は　さいごに　てんを　わすれずに　かこうね。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["学"],
-      "incorrect_answers": ["子","字"],
+      "incorrect_answers": ["子", "字"],
       "expected_message": "かたちの　にて　いる　かん字に　気を　つけよう。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["目"],
-      "incorrect_answers": ["日","月"],
+      "incorrect_answers": ["日", "月"],
       "expected_message": "よこぼうの　かずと　かたちに　気を　つけよう。"
     }
   ],
-   "SHOUGAKKOU": [
+  "SHOUGAKKOU": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["1かいめ"],
-      "incorrect_answers": ["2かいめ","3かいめ"],
+      "incorrect_answers": ["2かいめ", "3かいめ"],
       "expected_message": "はじめに　まん中を　かくよ。"
     },
     {
-      "id": 2, "type": "path",
+      "id": 2,
+      "type": "xpath",
       "correct_answers": ["xpath=//*[@id='1047573']"],
-      "incorrect_answers": ["xpath=//*[@id='1047572']","xpath=//*[@id='1047571']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047572']",
+        "xpath=//*[@id='1047571']"
+      ],
       "expected_message": "上の　てんの　ただしい　かきじゅんと　かたちを　おぼえよう。"
     },
     {
-      "id": 3, "type": "text",
-      "correct_answers": ["xpath=//*[@id='1047575']"],
-      "incorrect_answers": ["xpath=//*[@id='1047576']","xpath=//*[@id='1047574']"],
+      "id": 3,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047576']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047575']",
+        "xpath=//*[@id='1047574']"
+      ],
       "expected_message": "みぎがわの　かたちに　気を　つけよう。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["4かいめ"],
-      "incorrect_answers": ["5かいめ","3かいめ","6かいめ"],
+      "incorrect_answers": ["5かいめ", "3かいめ", "6かいめ"],
       "expected_message": "まちがえた　ときは、もう　いちど　かきじゅんを　たしかめて　みよう。"
     },
     {
-      "id": 5, "type": "text",
-      "correct_answers": ["xpath=//*[@id='1047581']"],
-      "incorrect_answers": ["xpath=//*[@id='1047582']","xpath=//*[@id='1047583']"],
+      "id": 5,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047582']"],
+      "incorrect_answers": [
+        "xpath=//*[@id='1047581']",
+        "xpath=//*[@id='1047583']"
+      ],
       "expected_message": "下は　「日」を　かくよ。「日」の　よこぼうの　かずにも　気を　つけよう。"
     }
   ],
-     "KATAKANANOKATACHI": [
+  "KATAKANANOKATACHI": [
     {
-      "id": 1, "type": "text",
+      "id": 1,
+      "type": "text",
       "correct_answers": ["サラダ"],
       "incorrect_answers": ["サうダ"],
       "expected_message": "かたかなの　「ラ」と、ひらがなの　「う」は、にて　いるから　ちゅういしよう。"
     },
     {
-      "id": 2, "type": "text",
+      "id": 2,
+      "type": "text",
       "correct_answers": ["レモン"],
       "incorrect_answers": ["レもン"],
       "expected_message": "ひらがなの　「も」と　かたかなの　「モ」は、　にて　いるから　気を　つけよう。"
     },
     {
-      "id": 3, "type": "text",
+      "id": 3,
+      "type": "text",
       "correct_answers": ["トマト"],
       "incorrect_answers": ["トアト"],
       "expected_message": "「マ」と　「ア」は　にて　いるから　ちゅういしよう。"
     },
     {
-      "id": 4, "type": "text",
+      "id": 4,
+      "type": "text",
       "correct_answers": ["ネクタイ"],
-      "incorrect_answers": ["ネウタイ","ネワタイ"],
+      "incorrect_answers": ["ネウタイ", "ネワタイ"],
       "expected_message": "かたちが　にて　いる　字に　気を　つけよう。"
     },
     {
-      "id": 5, "type": "text",
+      "id": 5,
+      "type": "text",
       "correct_answers": ["シャベル"],
       "incorrect_answers": ["ツャベル"],
       "expected_message": "「シ」と　「ツ」は、てんの　むきに　ちゅういしよう。"
     }
   ],
-     "KODOMOWO...": [
+  "KODOMOWO...": [
     {
-      "id": 1, "type": "text",
-      "correct_answers": ["サラダ"],
-      "incorrect_answers": ["サうダ"],
-      "expected_message": "かたかなの　「ラ」と、ひらがなの　「う」は、にて　いるから　ちゅういしよう。"
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["早く"],
+      "incorrect_answers": ["早やく"],
+      "expected_message": "ほかにも　「よていを　早める。」と　いう　つかいかたも　あるね。"
     },
     {
-      "id": 2, "type": "text",
-      "correct_answers": ["レモン"],
-      "incorrect_answers": ["レもン"],
-      "expected_message": "ひらがなの　「も」と　かたかなの　「モ」は、　にて　いるから　気を　つけよう。"
+      "id": 2,
+      "type": "text",
+      "correct_answers": ["5かいめ"],
+      "incorrect_answers": ["4かいめ", "6かいめ", "7かいめ"],
+      "expected_message": "「口」と　たてぼうを　かいてから　よこぼうを　かくよ。"
     },
     {
-      "id": 3, "type": "text",
-      "correct_answers": ["トマト"],
-      "incorrect_answers": ["トアト"],
-      "expected_message": "「マ」と　「ア」は　にて　いるから　ちゅういしよう。"
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["2かいめ"],
+      "incorrect_answers": ["1かいめ", "3かいめ", "4かいめ"],
+      "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     },
     {
-      "id": 4, "type": "text",
-      "correct_answers": ["ネクタイ"],
-      "incorrect_answers": ["ネウタイ","ネワタイ"],
-      "expected_message": "かたちが　にて　いる　字に　気を　つけよう。"
+      "id": 4,
+      "type": "text",
+      "correct_answers": ["3かいめ"],
+      "incorrect_answers": ["1かいめ", "2かいめ", "4かいめ"],
+      "expected_message": "まちがえた　ときは、もう　一ど　かきじゅんを　たしかめて　みよう。"
     },
     {
-      "id": 5, "type": "text",
-      "correct_answers": ["シャベル"],
-      "incorrect_answers": ["ツャベル"],
-      "expected_message": "「シ」と　「ツ」は、てんの　むきに　ちゅういしよう。"
+      "id": 5,
+      "type": "xpath",
+      "correct_answers": ["xpath=//*[@id='1047567']"],
+      "incorrect_answers": ["xpath=//*[@id='1047566']"],
+      "expected_message": "はじめに　たてぼうを　かくよ。"
+    }
+  ],
+  "SETSUMEIBUNWOYOMOU": [
+    {
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["じめんの　土つちが　とても　かわいて　いる。"],
+      "incorrect_answers": [
+        "じめんが　ぬれて　いて　はっぱが　たくさん　はえている。",
+        "はっぱの　はえて　いない　木きが　おおい。"
+      ],
+      "expected_message": "じめんの　土つちが　とても　かわいて　いる。"
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "correct_answers": ["とんで　いる　とりを　つかまえる　こと。"],
+      "incorrect_answers": [
+        "あしを　まげずに、った　ままで　を　のむ　こと。",
+        "木きに　はえた　はっぱ を　たべる　こと。"
+      ],
+      "expected_message": "とんで　いる　とりを　つかまえる　こと。"
+    },
+    {
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["すぐに　にげられる。"],
+      "incorrect_answers": [
+        "ながい　くびで　たたかえる。",
+        "そのまま　水みずを　のんで　いられる。"
+      ],
+      "expected_message": "すぐに　にげられる。"
+    }
+  ],
+  "MONOGATARIWOYOMOU02": [
+    {
+      "id": 1,
+      "type": "text",
+      "correct_answers": ["ひょうざんの　上うえ。"],
+      "incorrect_answers": ["うみどりの　上うえ。", "オーロラの　上うえ。"],
+      "expected_message": "ひょうざんの　上うえ"
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "correct_answers": ["こおりの　かたまりが　ニふたつに　われた　音おと。"],
+      "incorrect_answers": [
+        "二ふたつの　こおりが　一ひとつに　くっついた　音おと。",
+        "こおりの　かたまりが　ながれて　いく　音おと。"
+      ],
+      "expected_message": "こおりの　かたまりが　ニふたつに　われた　音おと。"
+    },
+    {
+      "id": 3,
+      "type": "text",
+      "correct_answers": ["おかあさんたちと　はなれて　しまったから。"],
+      "incorrect_answers": [
+        "オーロラが　見みえなかったから。",
+        "うみどりを　つかまえられなかったから。"
+      ],
+      "expected_message": "おかあさんたちと　はなれて　しまったから。"
+    }
+  ],
+  "MINANIHANASOU": [
+    {
+      "id": 1,
+      "type": "fill_blank",
+      "choices": {
+        "土どよう日び": "土どよう日び",
+        "日につきよう日び": "日につきよう日び",
+        "おかあさん": "おかあさん",
+        "いもうと": "いもうと"
+      },
+      "correct_answers": [
+        {
+          "blank_locator": "[data-id='question-0']",
+          "choice_text": "土どよう日び"
+        },
+        { "blank_locator": "[data-id='question-1']", "choice_text": "いもうと" }
+      ],
+      "incorrect_answers": [
+        {
+          "blank_locator": "[data-id='question-0']",
+          "choice_text": "日につきよう日び"
+        },
+        {
+          "blank_locator": "[data-id='question-1']",
+          "choice_text": "おかあさん"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "correct_answers": [
+        "した　ことの　わけを　はなして　いる。",
+        "さいごに、かんそうを　はなして　いる。"
+      ],
+      "incorrect_answers": [
+        "おかあさんの　ようすを　はなして　いない。",
+        "みんなが　なにを　したか　きいて　いる。"
+      ]
     }
   ]
 }

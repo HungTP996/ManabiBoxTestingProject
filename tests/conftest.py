@@ -5,36 +5,26 @@ import pytest
 import json
 import google.generativeai as genai
 from PIL import Image
+from pathlib import Path
 from playwright.sync_api import Page, expect, Browser, BrowserContext
 from config import settings
 
-# =============================================================================
-# Pytest Hooks (pytestフック)
-# =============================================================================
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
-    """
-    各テストの実行結果（成功、失敗、スキップ）を item オブジェクトに保存するフック。
-    失敗時のスクリーンショット取得などで利用します。
-    """
     outcome = yield
     rep = outcome.get_result()
     setattr(item, "rep_" + rep.when, rep)
 
+
+# パラメータ化されたテストのIDを生成
 def pytest_make_parametrize_id(config, val, argname):
-    """
-    パラメータ化テストのテストIDをカスタマイズするフック。
-    レポートに見やすい名前を表示します。
-    """
     if argname == "test_case" and isinstance(val, dict):
         return val.get("test_id") or val.get("description")
     return None
 
-# =============================================================================
-# Browser Fixtures (ブラウザ関連のフィクスチャ)
-# =============================================================================
 
+# ブラウザコンテキストをクラススコープで作成・破棄
 @pytest.fixture(scope="class")
 def browser_context(browser: Browser) -> Generator[BrowserContext, Any, None]:
     context = browser.new_context()
@@ -42,6 +32,7 @@ def browser_context(browser: Browser) -> Generator[BrowserContext, Any, None]:
     context.close()
 
 
+# ページオブジェクトをクラススコープで作成・破棄
 @pytest.fixture(scope="class")
 def page(browser_context: BrowserContext) -> Generator[Page, Any, None]:
     page = browser_context.new_page()
@@ -49,17 +40,14 @@ def page(browser_context: BrowserContext) -> Generator[Page, Any, None]:
     page.close()
 
 
+# テスト失敗時にスクリーンショットを撮るフィクスチャ
 @pytest.fixture(scope="class")
 def page_on_failure(page: Page, request):
-    """
-    テスト失敗時に自動でスクリーンショットを保存する機能を追加したページフィクスチャ。
-    """
     yield page
 
-    # `rep_call` 属性の存在を確認してからアクセスする
+    # テストが失敗した場合
     if hasattr(request.node, "rep_call") and request.node.rep_call.failed:
         screenshots_dir = "screenshots"
-        # screenshotsディレクトリがなければ作成
         os.makedirs(screenshots_dir, exist_ok=True)
 
         screenshot_path = os.path.join(
@@ -72,21 +60,19 @@ def page_on_failure(page: Page, request):
             print(f"\n🚨 スクリーンショットの保存に失敗しました: {e}")
 
 
+# ログイン済みのページを提供するフィクスチャ (クラススコープ)
 @pytest.fixture(scope="class")
 def logged_in_page(page_on_failure: Page) -> Page:
-    """
-    アプリケーションにログイン済みの状態のページを提供するフィクスチャ。
-    クラスごとに一度だけログイン処理を実行します。
-    """
+
     page = page_on_failure
     print(f"\n--- [CLASS SCOPE] ログイン処理を開始します ---")
 
     page.goto(settings.BASE_URL, timeout=60000)
-    pw_input = page.get_by_role("textbox", name="パスワード")
+    pw_input = page.get_by_role("textbox", name="パスワード") # パスワード入力フィールド
     pw_input.fill(settings.PASSWORD)
-    pw_input.press("Enter")
+    pw_input.press("Enter") # Enterキーを押してログイン
 
-    # ログイン成功の検証
+    # ログイン成功の確認 (例: 特定の要素の表示を待つ)
     expect(page.get_by_alt_text("まなびボックス")).to_be_visible(timeout=15000)
     print("--- [CLASS SCOPE] ログインに成功しました ---")
 
@@ -95,33 +81,25 @@ def logged_in_page(page_on_failure: Page) -> Page:
     print("\n--- [CLASS SCOPE] ログインフィクスチャを終了します ---")
 
 
-# =============================================================================
-# AI Verification Fixture (AI検証フィクスチャ)
-# =============================================================================
-
+# AI (Gemini) を使用した画像検証機能を提供するフィクスチャ (セッションスコープ)
 @pytest.fixture(scope="session")
 def ai_vision_verifier():
-    """
-    AIによる画像検証機能を提供します。
-    テストセッション全体でモデルのセットアップを一度だけ行います。
-    """
     print("\n--- [SESSION SCOPE] AI Vision Verifierを初期化中 ---")
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        pytest.fail("GEMINI_API_KEYが見つかりません。.envファイルを確認してください。")
+        pytest.skip("GEMINI_API_KEYが見つかりません。.envファイルを確認してください。", allow_module_level=True)
 
     genai.configure(api_key=api_key)
+    # 画像解析に適したモデルを使用
     model = genai.GenerativeModel('gemini-1.5-flash')
 
     # 検証用の内部関数を定義して返す
     def _verify(screenshot_path: str, expected_char: str) -> bool:
-        """指定された画像の文字が期待値と一致するかをAIで検証します。"""
         print(f"\n--- 画像 '{screenshot_path}' をAIに送信して分析中... ---")
         try:
             image = Image.open(screenshot_path)
+            # AIへのプロンプト
             prompt = f"Is the character in this image the Japanese for '{expected_char}'? Answer only YES or NO."
-            # 日本語でプロンプトを記述する場合：
-            # prompt = f"この画像に写っている文字は日本語の「{expected_char}」ですか？「はい」か「いいえ」だけで答えてください。"
 
             response = model.generate_content([prompt, image])
             ai_answer = response.text.strip().upper()
@@ -130,20 +108,17 @@ def ai_vision_verifier():
             return ai_answer == "YES"
 
         except Exception as e:
-            pytest.fail(f"AI APIの呼び出し中にエラーが発生しました: {e}")
-            return False
+            # テストがスキップ/ハンドルできるように例外を投げる
+            raise RuntimeError(f"AI API error: {e}")
 
-    # テストが呼び出せるように_verify関数自体を返す
     yield _verify
 
-# =============================================================================
-# Json fixture
-# =============================================================================
 
 @pytest.fixture(scope="session")
 def kokugo_test_data():
-    """Fixture này tải toàn bộ dữ liệu từ file data.json."""
-    file_path = "tests/kokugo/data.json" # Đảm bảo đường dẫn chính xác
+    current_dir = Path(__file__).parent
+    file_path = current_dir / "kokugo" / "data.json"
+    print(f"--> データファイルを読み込み中: {file_path}")
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data

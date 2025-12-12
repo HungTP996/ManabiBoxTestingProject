@@ -2,10 +2,10 @@ import pytest
 from playwright.sync_api import Page, expect
 
 
-# --- Hàm Assert Helper ---
+# --- Assert Helper 関数 ---
 def assert_answer(page: Page, text: str, timeout: int = 10000):
     """
-    Chờ câu trả lời xuất hiện theo 3 lớp.
+    回答が3層で表示されるのを待機します。
     """
     try:
         expect(page.get_by_text(text).first).to_be_visible(timeout=timeout // 2)
